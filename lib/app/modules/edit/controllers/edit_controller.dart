@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
-  //TODO: Implement HomeController
+class EditController extends GetxController {
+  //TODO: Implement EditController
 
   final count = 0.obs;
   // @override
