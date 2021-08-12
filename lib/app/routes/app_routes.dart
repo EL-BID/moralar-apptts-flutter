@@ -15,6 +15,8 @@ abstract class Routes {
   static const QUIZ = _Paths.QUIZ;
   // ignore: constant_identifier_names
   static const MENU = _Paths.MENU;
+  // ignore: constant_identifier_names
+  static const CHANGE_PASSWORD = _Paths.CHANGE_PASSWORD;
 }
 
 abstract class _Paths {
@@ -29,5 +31,7 @@ abstract class _Paths {
   // ignore: constant_identifier_names
   static const QUIZ = '/quiz';
   // ignore: constant_identifier_names
-  static const MENU = '/MENU';
+  static const MENU = '/menu';
+  // ignore: constant_identifier_names
+  static const CHANGE_PASSWORD = '/change-password';
 }

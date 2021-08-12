@@ -46,6 +46,11 @@ class AppPages {
       binding: QuizBinding(),
     ),
     GetPage(
+      name: _Paths.CHANGE_PASSWORD,
+      page: () => ChangePasswordView(),
+      binding: ChangePasswordBinding(),
+    ),
+    GetPage(
       name: _Paths.MENU,
       page: () => MoralarDrawer(
         header: const MoralarDrawerHeader(
@@ -85,7 +90,7 @@ class AppPages {
             titleText: 'Alterar Senha',
             icon: FontAwesomeIcons.lock,
             onTap: () {
-              Get.toNamed(Routes.HOME);
+              Get.toNamed(Routes.CHANGE_PASSWORD);
             },
           ),
         ],
