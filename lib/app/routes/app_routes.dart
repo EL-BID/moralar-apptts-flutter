@@ -17,6 +17,8 @@ abstract class Routes {
   static const MENU = _Paths.MENU;
   // ignore: constant_identifier_names
   static const CHANGE_PASSWORD = _Paths.CHANGE_PASSWORD;
+  // ignore: constant_identifier_names
+  static const RECOVERY_PASSWORD = _Paths.RECOVERY_PASSWORD;
 }
 
 abstract class _Paths {
@@ -34,4 +36,6 @@ abstract class _Paths {
   static const MENU = '/menu';
   // ignore: constant_identifier_names
   static const CHANGE_PASSWORD = '/change-password';
+  // ignore: constant_identifier_names
+  static const RECOVERY_PASSWORD = '/recovery-password';
 }

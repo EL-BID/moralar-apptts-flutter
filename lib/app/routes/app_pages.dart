@@ -51,6 +51,11 @@ class AppPages {
       binding: ChangePasswordBinding(),
     ),
     GetPage(
+      name: _Paths.RECOVERY_PASSWORD,
+      page: () => RecoveryPasswordView(),
+      binding: RecoveryPasswordBinding(),
+    ),
+    GetPage(
       name: _Paths.MENU,
       page: () => MoralarDrawer(
         header: const MoralarDrawerHeader(
@@ -62,7 +67,7 @@ class AppPages {
             titleText: 'Famílias',
             icon: FontAwesomeIcons.bars,
             onTap: () {
-              Get.toNamed(Routes.HOME);
+              Get.toNamed(Routes.RECOVERY_PASSWORD);
             },
           ),
           MoralarDrawerListTile(
