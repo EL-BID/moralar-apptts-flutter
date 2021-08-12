@@ -16,7 +16,7 @@ class HomeView extends GetView<HomeController> {
           child: Column(
             children: [
               MoralarButton(
-                function: () {
+                onPressed: () {
                   Get.toNamed(Routes.EDIT);
                 },
                 child: Container(

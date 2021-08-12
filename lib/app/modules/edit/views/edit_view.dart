@@ -79,7 +79,7 @@ class EditView extends GetView<EditController> {
               ),
               const SizedBox(height: 32),
               MoralarButton(
-                function: () {
+                onPressed: () {
                   print('Editar Perfil');
                 },
                 child: Container(
