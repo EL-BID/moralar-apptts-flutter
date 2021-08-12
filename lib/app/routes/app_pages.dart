@@ -1,5 +1,7 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:moralar_tts/app/modules/timeline/bindings/timeline_binding.dart';
+import 'package:moralar_tts/app/modules/timeline/views/timeline_view.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
 import '../modules/edit/bindings/edit_binding.dart';
@@ -22,7 +24,7 @@ class AppPages {
     GetPage(
       name: _Paths.SPLASH,
       page: () => SplashScreen(
-        onDelayCompleted: () => Get.offAndToNamed(Routes.MENU),
+        onDelayCompleted: () => Get.offAndToNamed(Routes.TIMELINE),
       ),
     ),
     GetPage(
@@ -67,14 +69,14 @@ class AppPages {
             titleText: 'Famílias',
             icon: FontAwesomeIcons.bars,
             onTap: () {
-              Get.toNamed(Routes.RECOVERY_PASSWORD);
+              Get.toNamed(Routes.TIMELINE);
             },
           ),
           MoralarDrawerListTile(
             titleText: 'Matchs',
             icon: FontAwesomeIcons.home,
             onTap: () {
-              Get.toNamed(Routes.HOME);
+              Get.toNamed(Routes.RECOVERY_PASSWORD);
             },
           ),
           MoralarDrawerListTile(
@@ -100,6 +102,11 @@ class AppPages {
           ),
         ],
       ),
+    ),
+    GetPage(
+      name: _Paths.TIMELINE,
+      page: () => TimelineView(),
+      binding: TimelineBinding(),
     ),
   ];
 }
