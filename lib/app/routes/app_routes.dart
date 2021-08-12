@@ -10,6 +10,10 @@ abstract class Routes {
   // ignore: constant_identifier_names
   static const EDIT = _Paths.EDIT;
   // ignore: constant_identifier_names
+  static const QUIZZES = _Paths.QUIZZES;
+  // ignore: constant_identifier_names
+  static const QUIZ = _Paths.QUIZ;
+  // ignore: constant_identifier_names
   static const MENU = _Paths.MENU;
 }
 
@@ -19,7 +23,11 @@ abstract class _Paths {
   // ignore: constant_identifier_names
   static const HOME = '/home';
   // ignore: constant_identifier_names
-  static const MENU = '/MENU';
-  // ignore: constant_identifier_names
   static const EDIT = '/edit';
+  // ignore: constant_identifier_names
+  static const QUIZZES = '/quizzes';
+  // ignore: constant_identifier_names
+  static const QUIZ = '/quiz';
+  // ignore: constant_identifier_names
+  static const MENU = '/MENU';
 }

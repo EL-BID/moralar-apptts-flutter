@@ -6,6 +6,9 @@ import '../modules/edit/bindings/edit_binding.dart';
 import '../modules/edit/views/edit_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/quiz/bindings/quiz_binding.dart';
+import '../modules/quiz/views/quiz_view.dart';
+import '../modules/quizzes/views/quizzes_view.dart';
 
 part 'app_routes.dart';
 
@@ -33,6 +36,16 @@ class AppPages {
       binding: EditBinding(),
     ),
     GetPage(
+      name: _Paths.QUIZZES,
+      page: () => QuizzesView(),
+      binding: QuizBinding(),
+    ),
+    GetPage(
+      name: _Paths.QUIZ,
+      page: () => QuizView(),
+      binding: QuizBinding(),
+    ),
+    GetPage(
       name: _Paths.MENU,
       page: () => MoralarDrawer(
         header: const MoralarDrawerHeader(
@@ -55,10 +68,10 @@ class AppPages {
             },
           ),
           MoralarDrawerListTile(
-            titleText: 'Questionarios',
+            titleText: 'Questionários',
             icon: FontAwesomeIcons.solidQuestionCircle,
             onTap: () {
-              Get.toNamed(Routes.HOME);
+              Get.toNamed(Routes.QUIZZES);
             },
           ),
           MoralarDrawerListTile(
