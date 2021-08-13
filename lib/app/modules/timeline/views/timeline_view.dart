@@ -9,6 +9,7 @@ import '../controllers/timeline_controller.dart';
 class TimelineView extends GetView<TimelineController> {
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return MoralarScaffold(
       appBar: MoralarAppBar(
         titleText: 'Famílias',
@@ -27,9 +28,39 @@ class TimelineView extends GetView<TimelineController> {
         child: Container(
           padding: const EdgeInsets.all(24),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(),
+              Obx(() {
+                return FilterCard(
+                  filterHint: controller.hintStatus.value,
+                  filterStatus: controller.filterStatus,
+                  onChanged: (s) {
+                    controller.hintStatus.value = s!;
+                  },
+                  onPressed: () {
+                    print('buscar');
+                  },
+                );
+              }),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(4, (index) {
+                  return FamilyCard(status: index);
+                }),
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                child: MoralarButton(
+                  onPressed: () {},
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Extrair Relatório',
+                      style: textTheme.button,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
