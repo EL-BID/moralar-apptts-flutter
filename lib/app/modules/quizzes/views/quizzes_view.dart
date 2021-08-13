@@ -19,7 +19,7 @@ class QuizzesView extends GetView<QuizzesController> {
   Widget build(BuildContext context) {
     return MoralarScaffold(
       appBar: const MoralarAppBar(
-        titleText: 'Questionários ou Enquetes',
+        titleText: 'Questionários',
       ),
       body: SingleChildScrollView(
         child: Column(

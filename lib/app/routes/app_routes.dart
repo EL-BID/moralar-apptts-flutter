@@ -21,6 +21,8 @@ abstract class Routes {
   static const RECOVERY_PASSWORD = _Paths.RECOVERY_PASSWORD;
   // ignore: constant_identifier_names
   static const TIMELINE = _Paths.TIMELINE;
+  // ignore: constant_identifier_names
+  static const ANSWERS = _Paths.ANSWERS;
 }
 
 abstract class _Paths {
@@ -42,4 +44,6 @@ abstract class _Paths {
   static const RECOVERY_PASSWORD = '/recovery-password';
   // ignore: constant_identifier_names
   static const TIMELINE = '/timeline';
+  // ignore: constant_identifier_names
+  static const ANSWERS = '/answers';
 }

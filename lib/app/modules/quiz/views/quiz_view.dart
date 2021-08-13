@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/quiz_controller.dart';
 
 class QuizView extends GetView<QuizController> {
@@ -16,15 +18,14 @@ class QuizView extends GetView<QuizController> {
           Expanded(
             child: SingleChildScrollView(
               child: Column(
-                children: [
-                  const QuizHeader(quizLength: 10, number: 1),
-                  const SizedBox(height: 64),
+                children: const [
+                  QuizHeader(quizLength: 10, number: 1),
+                  SizedBox(height: 64),
                   OpenQuestion(),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 16),
           MoralarButton(
             onPressed: () => pageController.nextPage(
               duration: const Duration(milliseconds: 500),
@@ -139,10 +140,7 @@ class QuizView extends GetView<QuizController> {
             ),
           ),
           MoralarButton(
-            onPressed: () => pageController.previousPage(
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.ease,
-            ),
+            onPressed: () => Get.toNamed(Routes.ANSWERS),
             child: Container(
               alignment: Alignment.center,
               child: Text(
@@ -156,12 +154,26 @@ class QuizView extends GetView<QuizController> {
     }
 
     return MoralarScaffold(
-      appBar: const MoralarAppBar(
+      appBar: MoralarAppBar(
         titleText: 'Questionário',
+        leading: IconButton(
+          icon: const Icon(
+            FontAwesomeIcons.angleLeft,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            if (pageController.page == 0) {
+              Get.back();
+            } else {
+              pageController.jumpToPage(pageController.page!.toInt() - 1);
+            }
+          },
+        ),
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
         child: PageView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
           children: [_content(), _content2(), _content3(), _content4()],
         ),
