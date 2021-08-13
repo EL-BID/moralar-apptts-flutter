@@ -13,6 +13,8 @@ import '../modules/quiz/views/quiz_view.dart';
 import '../modules/quizzes/views/quizzes_view.dart';
 import '../modules/timeline/bindings/timeline_binding.dart';
 import '../modules/timeline/views/timeline_view.dart';
+import '../modules/timeline_details/bindings/timeline_details_binding.dart';
+import '../modules/timeline_details/views/timeline_details_view.dart';
 
 part 'app_routes.dart';
 
@@ -104,6 +106,7 @@ class AppPages {
           ),
         ],
       ),
+      transition: Transition.leftToRightWithFade,
     ),
     GetPage(
       name: _Paths.TIMELINE,
@@ -114,6 +117,11 @@ class AppPages {
       name: _Paths.ANSWERS,
       page: () => AnswersView(),
       binding: AnswersBinding(),
+    ),
+    GetPage(
+      name: _Paths.TIMELINE_DETAILS,
+      page: () => TimelineDetailsView(),
+      binding: TimelineDetailsBinding(),
     ),
   ];
 }

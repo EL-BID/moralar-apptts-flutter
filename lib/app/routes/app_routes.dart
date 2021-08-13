@@ -23,6 +23,8 @@ abstract class Routes {
   static const TIMELINE = _Paths.TIMELINE;
   // ignore: constant_identifier_names
   static const ANSWERS = _Paths.ANSWERS;
+  // ignore: constant_identifier_names
+  static const TIMELINE_DETAILS = _Paths.TIMELINE_DETAILS;
 }
 
 abstract class _Paths {
@@ -46,4 +48,6 @@ abstract class _Paths {
   static const TIMELINE = '/timeline';
   // ignore: constant_identifier_names
   static const ANSWERS = '/answers';
+  // ignore: constant_identifier_names
+  static const TIMELINE_DETAILS = '/timeline-details';
 }

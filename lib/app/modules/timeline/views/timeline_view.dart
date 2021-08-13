@@ -44,7 +44,13 @@ class TimelineView extends GetView<TimelineController> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: List.generate(4, (index) {
-                  return FamilyCard(status: index);
+                  return FamilyCard(
+                    status: index,
+                    function: () => Get.toNamed(
+                      Routes.TIMELINE_DETAILS,
+                      arguments: index,
+                    ),
+                  );
                 }),
               ),
               Container(
