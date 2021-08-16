@@ -1,5 +1,7 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:moralar_tts/app/modules/matchs/bindings/matchs_binding.dart';
+import 'package:moralar_tts/app/modules/matchs/views/matchs_view.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
 import '../modules/answers/bindings/answers_binding.dart';
@@ -80,7 +82,7 @@ class AppPages {
             titleText: 'Matchs',
             icon: FontAwesomeIcons.home,
             onTap: () {
-              Get.toNamed(Routes.RECOVERY_PASSWORD);
+              Get.toNamed(Routes.MATCHS);
             },
           ),
           MoralarDrawerListTile(
@@ -122,6 +124,11 @@ class AppPages {
       name: _Paths.TIMELINE_DETAILS,
       page: () => TimelineDetailsView(),
       binding: TimelineDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.MATCHS,
+      page: () => MatchsView(),
+      binding: MatchsBinding(),
     ),
   ];
 }

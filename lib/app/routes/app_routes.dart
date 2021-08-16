@@ -25,6 +25,8 @@ abstract class Routes {
   static const ANSWERS = _Paths.ANSWERS;
   // ignore: constant_identifier_names
   static const TIMELINE_DETAILS = _Paths.TIMELINE_DETAILS;
+  // ignore: constant_identifier_names
+  static const MATCHS = _Paths.MATCHS;
 }
 
 abstract class _Paths {
@@ -50,4 +52,6 @@ abstract class _Paths {
   static const ANSWERS = '/answers';
   // ignore: constant_identifier_names
   static const TIMELINE_DETAILS = '/timeline-details';
+  // ignore: constant_identifier_names
+  static const MATCHS = '/matchs';
 }
