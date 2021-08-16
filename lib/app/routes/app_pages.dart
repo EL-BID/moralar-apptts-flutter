@@ -1,7 +1,5 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:moralar_tts/app/modules/matchs/bindings/matchs_binding.dart';
-import 'package:moralar_tts/app/modules/matchs/views/matchs_view.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
 import '../modules/answers/bindings/answers_binding.dart';
@@ -10,6 +8,8 @@ import '../modules/edit/bindings/edit_binding.dart';
 import '../modules/edit/views/edit_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/matchs/bindings/matchs_binding.dart';
+import '../modules/matchs/views/matchs_view.dart';
 import '../modules/quiz/bindings/quiz_binding.dart';
 import '../modules/quiz/views/quiz_view.dart';
 import '../modules/quizzes/views/quizzes_view.dart';

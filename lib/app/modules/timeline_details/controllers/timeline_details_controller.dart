@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 
 class TimelineDetailsController extends GetxController {
-  //TODO: Implement TimelineDetailsController
-
   final count = 0.obs;
 
   final int status = Get.arguments;

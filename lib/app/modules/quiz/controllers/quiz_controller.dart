@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 
 class QuizController extends GetxController {
-  //TODO: Implement QuizController
-
   final count = 0.obs;
   final indexAnswer = 0.obs;
 

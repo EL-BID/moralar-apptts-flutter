@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 
 class EditController extends GetxController {
-  //TODO: Implement EditController
-
   final count = 0.obs;
   // @override
   // void onInit() {

@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 
 class AnswersController extends GetxController {
-  //TODO: Implement AnswersController
-
   final count = 0.obs;
   // @override
   // void onInit() {
