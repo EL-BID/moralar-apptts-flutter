@@ -35,7 +35,7 @@ class EditView extends GetView<EditController> {
                 label: 'Nome do profissional',
                 color: MoralarColors.waterBlue,
                 controller: TextEditingController(text: 'Lucas'),
-                style: textTheme.bodyText1
+                labelStyle: textTheme.bodyText1
                     ?.copyWith(color: MoralarColors.waterBlue, fontSize: 16),
               ),
               const SizedBox(height: 16),
@@ -43,7 +43,7 @@ class EditView extends GetView<EditController> {
                 label: 'Cargo',
                 color: MoralarColors.waterBlue,
                 controller: TextEditingController(text: 'Desenvolvedor Mobile'),
-                style: textTheme.bodyText1
+                labelStyle: textTheme.bodyText1
                     ?.copyWith(color: MoralarColors.waterBlue, fontSize: 16),
               ),
               const SizedBox(height: 16),
@@ -53,7 +53,7 @@ class EditView extends GetView<EditController> {
                 formats: [Formats.cpfMaskFormatter],
                 controller: TextEditingController(text: '777.777.777-77'),
                 keyboard: TextInputType.number,
-                style: textTheme.bodyText1
+                labelStyle: textTheme.bodyText1
                     ?.copyWith(color: MoralarColors.waterBlue, fontSize: 16),
               ),
               const SizedBox(height: 16),
@@ -62,7 +62,7 @@ class EditView extends GetView<EditController> {
                 color: MoralarColors.waterBlue,
                 controller: TextEditingController(text: 'lucas@megaleios.com'),
                 keyboard: TextInputType.emailAddress,
-                style: textTheme.bodyText1
+                labelStyle: textTheme.bodyText1
                     ?.copyWith(color: MoralarColors.waterBlue, fontSize: 16),
               ),
               const SizedBox(height: 16),
@@ -74,7 +74,7 @@ class EditView extends GetView<EditController> {
                 ],
                 controller: TextEditingController(text: '(77)77777-7777'),
                 keyboard: TextInputType.emailAddress,
-                style: textTheme.bodyText1
+                labelStyle: textTheme.bodyText1
                     ?.copyWith(color: MoralarColors.waterBlue, fontSize: 16),
               ),
               const SizedBox(height: 32),
