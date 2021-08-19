@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
-import '../../../routes/app_pages.dart';
 import '../controllers/quizzes_controller.dart';
 
 List<Widget> list = [
-  MoralarCard(
-      status: 1, isQuiz: true, function: () => Get.toNamed(Routes.QUIZ)),
-  MoralarCard(
-      status: 0, isQuiz: true, function: () => Get.toNamed(Routes.QUIZ)),
-  MoralarCard(
-      status: 0, isQuiz: true, function: () => Get.toNamed(Routes.QUIZ)),
+  // MoralarCard(
+  //     status: 1, isQuiz: true, function: () => Get.toNamed(Routes.QUIZ)),
+  // MoralarCard(
+  //     status: 0, isQuiz: true, function: () => Get.toNamed(Routes.QUIZ)),
+  // MoralarCard(
+  //     status: 0, isQuiz: true, function: () => Get.toNamed(Routes.QUIZ)),
 ];
 
 class QuizzesView extends GetView<QuizzesController> {
