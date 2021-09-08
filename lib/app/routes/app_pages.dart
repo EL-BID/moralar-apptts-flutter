@@ -14,6 +14,7 @@ import '../modules/matchs/bindings/matchs_binding.dart';
 import '../modules/matchs/views/matchs_view.dart';
 import '../modules/quiz/bindings/quiz_binding.dart';
 import '../modules/quiz/views/quiz_view.dart';
+import '../modules/quizzes/bindings/quizzes_binding.dart';
 import '../modules/quizzes/views/quizzes_view.dart';
 import '../modules/timeline/bindings/timeline_binding.dart';
 import '../modules/timeline/views/timeline_view.dart';
@@ -64,7 +65,7 @@ class AppPages {
     GetPage(
       name: _Paths.QUIZZES,
       page: () => QuizzesView(),
-      binding: QuizBinding(),
+      binding: QuizzesBinding(),
     ),
     GetPage(
       name: _Paths.QUIZ,
