@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:mega_flutter/mega_flutter.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
 import '../modules/answers/bindings/answers_binding.dart';
@@ -30,7 +32,23 @@ class AppPages {
     GetPage(
       name: _Paths.SPLASH,
       page: () => SplashScreen(
-        onDelayCompleted: () => Get.offAndToNamed(Routes.TIMELINE),
+        onDelayCompleted: () {
+          if (MegaFlutter.instance.auth.currentUser != null) {
+            final user = MegaFlutter.instance.auth.currentUser as TTS;
+            debugPrint('BEARER TOKEN ${user.token.accessToken}');
+            Get.offAndToNamed(Routes.TIMELINE);
+          } else {
+            Get.offAndToNamed(Routes.LOGIN);
+          }
+        },
+      ),
+    ),
+    GetPage(
+      name: _Paths.LOGIN,
+      page: () => LoginView(),
+      binding: LoginBinding(
+        onSignedIn: () => Get.offAndToNamed(Routes.TIMELINE),
+        recoveryPassword: () => Get.toNamed(Routes.RECOVERY_PASSWORD),
       ),
     ),
     GetPage(
@@ -107,6 +125,10 @@ class AppPages {
             },
           ),
         ],
+        signOut: () {
+          MegaFlutter.instance.auth.signOut();
+          Get.offAndToNamed(Routes.SPLASH);
+        },
       ),
       transition: Transition.leftToRightWithFade,
     ),

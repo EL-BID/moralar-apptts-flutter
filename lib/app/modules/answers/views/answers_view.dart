@@ -36,7 +36,6 @@ class AnswersView extends GetView<AnswersController> {
                     text:
                         // ignore: lines_longer_than_80_chars
                         'ecteturadipiscing  elit, sed do eiusmod tempor incididunt ut labore et  dolore magna aliqua. Ut enim ad minim veniam, quis  nostrudexercitation ullamco'),
-                label: '',
               ),
               const SizedBox(height: 64),
               _answerHeader(),
