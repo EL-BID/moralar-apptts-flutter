@@ -83,7 +83,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.MENU,
-      page: () => const TTSDrawer(),
+      page: () => DrawerView(),
+      binding: TimelineBinding(),
       transition: Transition.leftToRightWithFade,
     ),
     GetPage(

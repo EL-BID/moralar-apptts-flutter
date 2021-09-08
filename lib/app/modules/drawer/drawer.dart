@@ -5,18 +5,18 @@ import 'package:mega_flutter/mega_flutter.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
 import '../../routes/app_pages.dart';
+import '../timeline/controllers/timeline_controller.dart';
 
-class TTSDrawer extends StatelessWidget {
-  const TTSDrawer({Key? key}) : super(key: key);
-
+class DrawerView extends GetView<TimelineController> {
   @override
   Widget build(BuildContext context) {
-    final user = MegaFlutter.instance.auth.currentUser as TTS;
     return MoralarDrawer(
-      header: MoralarDrawerHeader(
-        title: user.name,
-        subtitle: user.jobPost,
-      ),
+      header: Obx(() {
+        return MoralarDrawerHeader(
+          title: controller.user.value.name,
+          subtitle: controller.user.value.jobPost,
+        );
+      }),
       options: [
         MoralarDrawerListTile(
           titleText: 'Famílias',

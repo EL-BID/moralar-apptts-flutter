@@ -1,7 +1,16 @@
 import 'package:get/get.dart';
+import 'package:mega_flutter/mega_flutter.dart';
+import 'package:moralar_widgets/moralar_widgets.dart';
+
+import '../../../providers/timeline_provider.dart';
 
 class TimelineController extends GetxController {
-  final count = 0.obs;
+  final _timelineProvider = Get.find<TimelineProvider>();
+  final isLoading = false.obs;
+
+  //classes
+  final user = TTS(jobPost: '', name: '', cpf: '', email: '').obs;
+
   final hintStatus = 'Selecionar'.obs;
   final filterStatus = [
     'Reunião PGM',
@@ -9,17 +18,32 @@ class TimelineController extends GetxController {
     'Mudança',
     'Acompanhamento pós-mudança',
   ];
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  // }
+
+  Future<void> getInfo() async {
+    isLoading.value = true;
+    try {
+      user.value = await _timelineProvider.getInfo();
+      isLoading.value = false;
+    } on MegaResponseException catch (e) {
+      isLoading.value = false;
+      Get.snackbar(
+        'Algo deu errado!',
+        e.message!,
+        colorText: MoralarColors.veryLightPink,
+        backgroundColor: MoralarColors.strawberry,
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+  }
+
+  @override
+  void onInit() {
+    getInfo();
+    super.onInit();
+  }
 
   // @override
   // void onReady() {
   //   super.onReady();
   // }
-
-  @override
-  void onClose() {}
-  void increment() => count.value++;
 }
