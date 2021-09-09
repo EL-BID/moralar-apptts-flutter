@@ -30,43 +30,76 @@ class TimelineView extends GetView<TimelineController> {
           child: Column(
             children: [
               Obx(() {
-                return FilterCard(
-                  filterHint: controller.hintStatus.value,
-                  filterStatus: controller.filterStatus,
-                  onChanged: (s) {
-                    controller.hintStatus.value = s!;
-                  },
-                  onPressed: () {
-                    print('buscar');
-                  },
+                return Column(
+                  children: [
+                    FilterCard(
+                      searchFamily: controller.familySearch,
+                      filterHint: controller.hintStatus.value,
+                      filterStatus: controller.filterStatus,
+                      onChanged: (s) {
+                        controller.hintStatus.value = s!;
+                      },
+                      onPressed: () {
+                        print(controller.familySearch.text);
+                        print(controller.hintStatus.value);
+                        controller.searchTimeline();
+                      },
+                    ),
+                    Visibility(
+                      visible: controller.isLoading.value,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 128),
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                      replacement: Visibility(
+                        visible: controller.familys.isNotEmpty,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children:
+                              List.generate(controller.familys.length, (index) {
+                            return FamilyCard(
+                              family: controller.familys[index],
+                              function: () => Get.toNamed(
+                                Routes.TIMELINE_DETAILS,
+                                arguments: index,
+                              ),
+                            );
+                          }),
+                        ),
+                        replacement: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(vertical: 128),
+                          child: Text(
+                            'Nenhuma família encontrada. Pesquise acima.',
+                            style: textTheme.headline1,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 24,
+                      ),
+                      child: MoralarButton(
+                        onPressed: () {},
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Extrair Relatório',
+                            style: textTheme.button,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               }),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(4, (index) {
-                  return FamilyCard(
-                    status: index,
-                    function: () => Get.toNamed(
-                      Routes.TIMELINE_DETAILS,
-                      arguments: index,
-                    ),
-                  );
-                }),
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                child: MoralarButton(
-                  onPressed: () {},
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Extrair Relatório',
-                      style: textTheme.button,
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),

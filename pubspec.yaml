@@ -14,7 +14,7 @@ dependencies:
     git:
       url: git@github.com:megaleios-git/mega-flutter
       ref: v0.1.4
-  
+    # path: '../mega-flutter'
   brasil_fields: 1.1.4
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^9.1.0

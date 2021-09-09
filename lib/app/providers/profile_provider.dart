@@ -27,4 +27,23 @@ class ProfileProvider extends RemoteProvider {
       rethrow;
     }
   }
+
+  Future<List<FamilyTTS>> searchTimeline(
+      String searchTerm, String typeSubject) async {
+    try {
+      final response = await post(
+        Urls.tts.timeline,
+        body: {
+          'searchTerm': searchTerm,
+          'typeSubject': typeSubject,
+        },
+      );
+      return (response.data as List)
+          .map((item) => FamilyTTS.fromJson(item))
+          .toList();
+    } on MegaResponseException catch (e) {
+      debugPrint(e.message);
+      rethrow;
+    }
+  }
 }

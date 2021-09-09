@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:mega_flutter/mega_flutter.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
@@ -10,7 +11,9 @@ class TimelineController extends GetxController {
 
   //classes
   final user = TTS(jobPost: '', name: '', cpf: '', email: '', id: '').obs;
+  final familys = <FamilyTTS>[].obs;
 
+  final TextEditingController familySearch = TextEditingController();
   final hintStatus = 'Selecionar'.obs;
   final filterStatus = [
     'Reunião PGM',
@@ -18,6 +21,26 @@ class TimelineController extends GetxController {
     'Mudança',
     'Acompanhamento pós-mudança',
   ];
+
+  Future<void> searchTimeline() async {
+    isLoading.value = true;
+    try {
+      familys.value = await _profileProvider.searchTimeline(
+        familySearch.text,
+        hintStatus.value,
+      );
+      isLoading.value = false;
+    } on MegaResponseException catch (e) {
+      isLoading.value = false;
+      Get.snackbar(
+        'Algo deu errado!',
+        e.message!,
+        colorText: MoralarColors.veryLightPink,
+        backgroundColor: MoralarColors.strawberry,
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+  }
 
   Future<void> getInfo() async {
     isLoading.value = true;
@@ -41,9 +64,4 @@ class TimelineController extends GetxController {
     getInfo();
     super.onInit();
   }
-
-  // @override
-  // void onReady() {
-  //   super.onReady();
-  // }
 }

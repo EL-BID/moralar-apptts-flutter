@@ -17,7 +17,7 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              FamilyCard(status: controller.status, isDetail: true),
+              // FamilyCard(status: controller.status, isDetail: true),
               Visibility(
                 visible: controller.status != 1,
                 child: SchedulingTTSCard(status: controller.status),
