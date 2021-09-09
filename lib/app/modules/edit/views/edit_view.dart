@@ -79,6 +79,7 @@ class EditView extends GetView<EditController> {
                           color: MoralarColors.waterBlue,
                           formats: [Formats.cpfMaskFormatter],
                           controller: controller.cpf,
+                          readOnly: true,
                           validators: [
                             Validatorless.required(
                               'CPF não pode estar em branco',

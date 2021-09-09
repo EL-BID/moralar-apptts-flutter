@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../providers/timeline_provider.dart';
+import '../../../providers/profile_provider.dart';
 import '../../timeline/controllers/timeline_controller.dart';
 import '../controllers/edit_controller.dart';
 
@@ -13,8 +13,8 @@ class EditBinding extends Bindings {
     Get.lazyPut<TimelineController>(
       () => TimelineController(),
     );
-    Get.lazyPut<TimelineProvider>(
-      () => TimelineProvider(),
+    Get.lazyPut<ProfileProvider>(
+      () => ProfileProvider(),
     );
   }
 }
