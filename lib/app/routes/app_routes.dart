@@ -8,8 +8,6 @@ abstract class Routes {
 // ignore: constant_identifier_names
   static const SPLASH = _Paths.SPLASH;
   // ignore: constant_identifier_names
-  static const HOME = _Paths.HOME;
-  // ignore: constant_identifier_names
   static const EDIT = _Paths.EDIT;
   // ignore: constant_identifier_names
   static const QUIZZES = _Paths.QUIZZES;
@@ -36,8 +34,6 @@ abstract class _Paths {
   static const LOGIN = '/login';
   // ignore: constant_identifier_names
   static const SPLASH = '/splash';
-  // ignore: constant_identifier_names
-  static const HOME = '/home';
   // ignore: constant_identifier_names
   static const EDIT = '/edit';
   // ignore: constant_identifier_names

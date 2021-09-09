@@ -8,8 +8,6 @@ import '../modules/answers/views/answers_view.dart';
 import '../modules/drawer/drawer.dart';
 import '../modules/edit/bindings/edit_binding.dart';
 import '../modules/edit/views/edit_view.dart';
-import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
 import '../modules/matchs/bindings/matchs_binding.dart';
 import '../modules/matchs/views/matchs_view.dart';
 import '../modules/quiz/bindings/quiz_binding.dart';
@@ -51,11 +49,6 @@ class AppPages {
         onSignedIn: () => Get.offAndToNamed(Routes.TIMELINE),
         recoveryPassword: () => Get.toNamed(Routes.RECOVERY_PASSWORD),
       ),
-    ),
-    GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
     ),
     GetPage(
       name: _Paths.EDIT,
