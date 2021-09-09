@@ -65,7 +65,7 @@ class TimelineView extends GetView<TimelineController> {
                               family: controller.familys[index],
                               function: () => Get.toNamed(
                                 Routes.TIMELINE_DETAILS,
-                                arguments: index,
+                                arguments: controller.familys[index],
                               ),
                             );
                           }),

@@ -10,17 +10,17 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
     return MoralarScaffold(
       appBar: MoralarAppBar(
         titleText: 'Detalhes',
-        backgroundColor: Family.statusColor(controller.status),
+        backgroundColor: Family.statusColor(controller.user.typeSubject),
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              // FamilyCard(status: controller.status, isDetail: true),
+              FamilyCard(family: controller.user, isDetail: true),
               Visibility(
-                visible: controller.status != 1,
-                child: SchedulingTTSCard(status: controller.status),
+                visible: controller.user.typeSubject != 1,
+                child: SchedulingTTSCard(status: controller.user.typeSubject),
                 replacement: const PropertyTTSCard(isHouse: true),
               ),
               FamilyInfoCard(
