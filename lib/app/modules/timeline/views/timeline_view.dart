@@ -74,7 +74,7 @@ class TimelineView extends GetView<TimelineController> {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.symmetric(vertical: 128),
                           child: Text(
-                            'Nenhuma família encontrada. Pesquise acima.',
+                            'Nenhuma família encontrada.\n\nPesquise acima.',
                             style: textTheme.headline1,
                             textAlign: TextAlign.center,
                           ),

@@ -23,22 +23,38 @@ class TimelineController extends GetxController {
   ];
 
   Future<void> searchTimeline() async {
-    isLoading.value = true;
-    try {
-      familys.value = await _profileProvider.searchTimeline(
-        familySearch.text,
-        hintStatus.value,
-      );
-      isLoading.value = false;
-    } on MegaResponseException catch (e) {
-      isLoading.value = false;
+    String typeSubject = '';
+
+    if (hintStatus.value != 'Selecionar') {
+      typeSubject = hintStatus.value;
+    }
+
+    if (familySearch.text.isEmpty && typeSubject.isEmpty) {
       Get.snackbar(
         'Algo deu errado!',
-        e.message!,
+        'Preencha pelo menos um campo.',
         colorText: MoralarColors.veryLightPink,
         backgroundColor: MoralarColors.strawberry,
         snackPosition: SnackPosition.TOP,
       );
+    } else {
+      isLoading.value = true;
+      try {
+        familys.value = await _profileProvider.searchTimeline(
+          familySearch.text,
+          typeSubject,
+        );
+        isLoading.value = false;
+      } on MegaResponseException catch (e) {
+        isLoading.value = false;
+        Get.snackbar(
+          'Algo deu errado!',
+          e.message!,
+          colorText: MoralarColors.veryLightPink,
+          backgroundColor: MoralarColors.strawberry,
+          snackPosition: SnackPosition.TOP,
+        );
+      }
     }
   }
 

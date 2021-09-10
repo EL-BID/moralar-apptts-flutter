@@ -32,13 +32,13 @@ class DrawerView extends GetView<TimelineController> {
             Get.toNamed(Routes.MATCHS);
           },
         ),
-        MoralarDrawerListTile(
-          titleText: 'Questionários',
-          icon: FontAwesomeIcons.solidQuestionCircle,
-          onTap: () {
-            Get.toNamed(Routes.QUIZZES);
-          },
-        ),
+        // MoralarDrawerListTile(
+        //   titleText: 'Questionários',
+        //   icon: FontAwesomeIcons.solidQuestionCircle,
+        //   onTap: () {
+        //     Get.toNamed(Routes.QUIZZES);
+        //   },
+        // ),
         MoralarDrawerListTile(
           titleText: 'Editar Perfil',
           icon: FontAwesomeIcons.userAlt,
