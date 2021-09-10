@@ -46,4 +46,39 @@ class ProfileProvider extends RemoteProvider {
       rethrow;
     }
   }
+
+  Future<List<Quiz>> quizByFamily(String familyId, String typeQuiz) async {
+    try {
+      final response = await get(
+        Urls.tts.quizByFamily,
+        queryParameters: {
+          'familyId': familyId,
+          'typeQuiz': typeQuiz,
+        },
+      );
+      return (response.data as List)
+          .map((item) => Quiz.fromJson(item))
+          .toList();
+    } on MegaResponseException catch (e) {
+      debugPrint(e.message);
+      rethrow;
+    }
+  }
+
+  Future<List<CourseTTS>> courseByFamily(String familyId) async {
+    try {
+      final response = await get(
+        Urls.tts.courseByFamily,
+        queryParameters: {
+          'familyId': familyId,
+        },
+      );
+      return (response.data as List)
+          .map((item) => CourseTTS.fromJson(item))
+          .toList();
+    } on MegaResponseException catch (e) {
+      debugPrint(e.message);
+      rethrow;
+    }
+  }
 }

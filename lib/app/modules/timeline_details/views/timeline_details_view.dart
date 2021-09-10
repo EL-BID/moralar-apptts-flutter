@@ -7,6 +7,7 @@ import '../controllers/timeline_details_controller.dart';
 class TimelineDetailsView extends GetView<TimelineDetailsController> {
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return MoralarScaffold(
       appBar: MoralarAppBar(
         titleText: 'Detalhes',
@@ -25,28 +26,117 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
               ),
               FamilyInfoCard(
                 title: 'Questionários Respondidos',
-                cards: List.generate(4, (index) {
-                  return MoralarTTSCard(
-                    status: index % 2,
-                    isCourse: false,
+                cards: Obx(() {
+                  return Visibility(
+                    visible: controller.isQuestLoading.value,
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 64),
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    replacement: Visibility(
+                      visible: controller.quest.isNotEmpty,
+                      child: Column(
+                        children:
+                            List.generate(controller.quest.length, (index) {
+                          return QuizTTSCard(
+                            quiz: controller.quest[index],
+                          );
+                        }),
+                      ),
+                      replacement: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 64),
+                        child: Text(
+                          'Nenhum Questionário encontrado',
+                          style: textTheme.headline1,
+                        ),
+                      ),
+                    ),
                   );
                 }),
               ),
               FamilyInfoCard(
                 title: 'Enquetes',
-                cards: List.generate(2, (index) {
-                  return MoralarTTSCard(
-                    status: index % 2,
-                    isCourse: false,
+                cards: Obx(() {
+                  return Visibility(
+                    visible: controller.isEnqLoading.value,
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 64),
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    replacement: Visibility(
+                      visible: controller.enq.isNotEmpty,
+                      child: Column(
+                        children: List.generate(controller.enq.length, (index) {
+                          return QuizTTSCard(
+                            quiz: controller.enq[index],
+                          );
+                        }),
+                      ),
+                      replacement: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 64),
+                        child: Text(
+                          'Nenhuma Enquete encontrada',
+                          style: textTheme.headline1,
+                        ),
+                      ),
+                    ),
                   );
                 }),
               ),
               FamilyInfoCard(
                 title: 'Cursos',
-                cards: List.generate(2, (index) {
-                  return MoralarTTSCard(
-                    status: index % 2,
-                    isCourse: true,
+                cards: Obx(() {
+                  return Visibility(
+                    visible: controller.isCourseLoading.value,
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 64),
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    replacement: Visibility(
+                      visible: controller.courses.isNotEmpty,
+                      child: Column(
+                        children:
+                            List.generate(controller.courses.length, (index) {
+                          return CourseTTSCard(
+                            course: controller.courses[index],
+                          );
+                        }),
+                      ),
+                      replacement: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 64),
+                        child: Text(
+                          'Nenhum Curso encontrado',
+                          style: textTheme.headline1,
+                        ),
+                      ),
+                    ),
                   );
                 }),
               ),
