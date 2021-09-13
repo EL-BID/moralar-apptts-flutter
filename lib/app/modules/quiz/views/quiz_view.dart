@@ -8,150 +8,68 @@ import '../controllers/quiz_controller.dart';
 class QuizView extends GetView<QuizController> {
   @override
   Widget build(BuildContext context) {
-    // final textTheme = Theme.of(context).textTheme;
-    final PageController pageController = PageController();
+    final textTheme = Theme.of(context).textTheme;
 
-    // _content() {
-    //   return Column(
-    //     children: [
-    //       Expanded(
-    //         child: SingleChildScrollView(
-    //           child: Column(
-    //             children: const [
-    //               QuizHeader(quizLength: 10, number: 1),
-    //               SizedBox(height: 64),
-    //               OpenQuestion(),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //       MoralarButton(
-    //         onPressed: () => pageController.nextPage(
-    //           duration: const Duration(milliseconds: 500),
-    //           curve: Curves.ease,
-    //         ),
-    //         child: Container(
-    //           alignment: Alignment.center,
-    //           child: Text(
-    //             'Continuar',
-    //             style: textTheme.button,
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   );
-    // }
-
-    // _content2() {
-    //   return Column(
-    //     children: [
-    //       Expanded(
-    //         child: SingleChildScrollView(
-    //           child: Column(
-    //             children: [
-    //               const QuizHeader(quizLength: 10, number: 2),
-    //               const SizedBox(height: 64),
-    //               Obx(() {
-    //                 return ListQuestion(
-    //                   index: controller.indexAnswer.value,
-    //                   answers: controller.answers,
-    //                   onChanged: controller.handleSuspenseList,
-    //                 );
-    //               }),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //       MoralarButton(
-    //         onPressed: () => pageController.nextPage(
-    //           duration: const Duration(milliseconds: 500),
-    //           curve: Curves.ease,
-    //         ),
-    //         child: Container(
-    //           alignment: Alignment.center,
-    //           child: Text(
-    //             'Continuar',
-    //             style: textTheme.button,
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   );
-    // }
-
-    // _content3() {
-    //   return Column(
-    //     crossAxisAlignment: CrossAxisAlignment.stretch,
-    //     mainAxisSize: MainAxisSize.min,
-    //     children: [
-    //       Expanded(
-    //         child: SingleChildScrollView(
-    //           child: Column(
-    //             crossAxisAlignment: CrossAxisAlignment.stretch,
-    //             mainAxisSize: MainAxisSize.min,
-    //             children: [
-    // ignore: lines_longer_than_80_chars
-    //               const QuizHeader(quizLength: 10, number: 3, onlyAnswer: true),
-    //               Obx(() {
-    //                 return CloseQuestion(
-    //                   questionIndex: controller.indexAnswer.value,
-    //                   answers: controller.answers,
-    //                   onChanged: controller.handleQuestionValueChange,
-    //                 );
-    //               }),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //       MoralarButton(
-    //         onPressed: () => pageController.nextPage(
-    //           duration: const Duration(milliseconds: 500),
-    //           curve: Curves.ease,
-    //         ),
-    //         child: Container(
-    //           alignment: Alignment.center,
-    //           child: Text(
-    //             'Continuar',
-    //             style: textTheme.button,
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   );
-    // }
-
-    // _content4() {
-    //   return Column(
-    //     children: [
-    //       Expanded(
-    //         child: SingleChildScrollView(
-    //           child: Column(
-    //             children: [
-    //               const QuizHeader(quizLength: 10, number: 4),
-    //               Obx(() {
-    //                 return CloseQuestion(
-    //                   questionIndex: controller.indexAnswer.value,
-    //                   answers: const ['1', '2', '3', '4', '5', '6'],
-    //                   onChanged: controller.handleQuestionValueChange,
-    //                 );
-    //               }),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //       MoralarButton(
-    //         onPressed: () => Get.toNamed(Routes.ANSWERS),
-    //         child: Container(
-    //           alignment: Alignment.center,
-    //           child: Text(
-    //             'Continuar',
-    //             style: textTheme.button,
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   );
-    // }
+    _content(QuestionResponse response, int index) {
+      final answers = controller.getDescriptionAnswers(
+        response.description,
+        index,
+      );
+      return Visibility(
+        visible: response.typeResponse == 0,
+        child: OpenQuestion(
+          controller: TextEditingController(
+            text: controller.answers[index].answerDescription!,
+          ),
+          onChanged: (s) {
+            controller.answers[index].answerDescription = s;
+          },
+        ),
+        replacement: Visibility(
+          visible: response.typeResponse == 1,
+          child: MultiplyQuestion(
+            questionValue: controller.valueAnswer[index],
+            answers: answers,
+            onChanged: (i) {
+              controller.valueAnswer[index][i!] =
+                  !controller.valueAnswer[index][i];
+            },
+          ),
+          replacement: Visibility(
+            visible: response.typeResponse == 2,
+            child: CloseQuestion(
+              questionIndex: controller.indexAnswer[index],
+              answers: answers,
+              onChanged: (i) {
+                controller.answers[index].questionDescriptionId!.clear();
+                controller.answers[index].questionDescriptionId!
+                    .add(response.description[i!].id);
+                controller.answers[index].answerDescription = answers[i];
+                controller.indexAnswer[index] = i;
+              },
+            ),
+            replacement: ListQuestion(
+              index: controller.indexAnswer[index],
+              answers: answers,
+              onChanged: (s) {
+                int i = 0;
+                for (final answer in answers) {
+                  if (answer == s) {
+                    controller.answers[index].questionDescriptionId!.clear();
+                    controller.answers[index].questionDescriptionId!
+                        .add(response.description[i].id);
+                    controller.answers[index].answerDescription = answers[i];
+                    controller.indexAnswer[index] = i;
+                    return;
+                  }
+                  i++;
+                }
+              },
+            ),
+          ),
+        ),
+      );
+    }
 
     return MoralarScaffold(
       appBar: MoralarAppBar(
@@ -162,23 +80,101 @@ class QuizView extends GetView<QuizController> {
             color: Colors.black,
           ),
           onPressed: () {
-            if (pageController.page == 0) {
+            if (!controller.hasPageView.value) {
+              Get.back();
+              return;
+            }
+            if (controller.pageController.page == 0) {
               Get.back();
             } else {
-              pageController.jumpToPage(pageController.page!.toInt() - 1);
+              controller.pageController.previousPage(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.ease,
+              );
             }
           },
         ),
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
-        child: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: pageController,
-          children: [
-            Container(),
-          ],
-        ),
+        child: Obx(() {
+          final questions = controller.quiz.value.questionViewModel;
+          return Visibility(
+            visible: controller.isLoading.value,
+            child: Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(vertical: 256),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+            replacement: Visibility(
+              visible: questions.isNotEmpty,
+              child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: controller.pageController,
+                children: List.generate(questions.length, (index) {
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              QuizHeader(
+                                quizLength: questions.length,
+                                number: index + 1,
+                                nameQuestion: questions[index].nameQuestion,
+                              ),
+                              Visibility(
+                                visible: questions[index].typeResponse == 2,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      '* Escolha apenas uma alternativa',
+                                      style: textTheme.headline6?.copyWith(
+                                        color: MoralarColors.brownishGrey,
+                                        fontSize: 18,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 64),
+                              _content(questions[index], index),
+                            ],
+                          ),
+                        ),
+                      ),
+                      MoralarButton(
+                        onPressed: () {
+                          controller.verifyAnswer(index);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Continuar',
+                            style: textTheme.button,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+              replacement: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 256),
+                child: Text(
+                  'Nenhuma pergunta encontrada',
+                  style: textTheme.headline1,
+                ),
+              ),
+            ),
+          );
+        }),
       ),
     );
   }

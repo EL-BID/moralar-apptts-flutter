@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/timeline_details_controller.dart';
 
 class TimelineDetailsView extends GetView<TimelineDetailsController> {
@@ -49,6 +50,15 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                             List.generate(controller.quest.length, (index) {
                           return QuizTTSCard(
                             quiz: controller.quest[index],
+                            function: () {
+                              Get.toNamed(
+                                Routes.QUIZ,
+                                arguments: [
+                                  controller.quest[index].id,
+                                  controller.user.id,
+                                ],
+                              );
+                            },
                           );
                         }),
                       ),
@@ -87,6 +97,15 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                         children: List.generate(controller.enq.length, (index) {
                           return QuizTTSCard(
                             quiz: controller.enq[index],
+                            function: () {
+                              Get.toNamed(
+                                Routes.QUIZ,
+                                arguments: [
+                                  controller.enq[index].id,
+                                  controller.user.id,
+                                ],
+                              );
+                            },
                           );
                         }),
                       ),

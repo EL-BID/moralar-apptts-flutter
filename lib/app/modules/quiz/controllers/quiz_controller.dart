@@ -1,44 +1,172 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mega_flutter/mega_flutter.dart';
+import 'package:moralar_widgets/moralar_widgets.dart';
+
+import '../../../providers/quiz_provider.dart';
+import '../../../routes/app_pages.dart';
 
 class QuizController extends GetxController {
-  final count = 0.obs;
-  final indexAnswer = 0.obs;
+  final _quizProvider = Get.find<QuizProvider>();
+  final isLoading = false.obs;
+  final hasPageView = false.obs;
+  final List<String> ids = Get.arguments;
+  String questionId = '';
+  String userId = '';
+  final PageController pageController = PageController();
 
-  late List<String> answers = [];
+  //Criação da tela
+  final indexAnswer = <int>[].obs;
+  final valueAnswer = [<bool>[].obs];
 
-  @override
-  void onInit() {
-    super.onInit();
-    answers = [
-      'Resposta 1',
-      'Resposta 2',
-      'Resposta 3',
-      'Resposta 4',
-    ];
+  //Classes
+  final quiz = QuizDetails(
+    id: Get.arguments[0],
+    questionViewModel: [],
+    title: '',
+    typeQuiz: 0,
+  ).obs;
+  final answers = <Answer>[];
+
+  Future<void> getQuizDetails() async {
+    isLoading.value = true;
+    try {
+      quiz.value = await _quizProvider.getQuizDetails(questionId);
+      await createAnswers(quiz.value.questionViewModel);
+      hasPageView.value = true;
+      isLoading.value = false;
+    } on MegaResponseException catch (e) {
+      isLoading.value = false;
+      Get.snackbar(
+        'Algo deu errado!',
+        e.message!,
+        colorText: MoralarColors.veryLightPink,
+        backgroundColor: MoralarColors.strawberry,
+        snackPosition: SnackPosition.TOP,
+      );
+    }
   }
 
-  // @override
-  // void onReady() {
-  //   super.onReady();
-  // }
-
-  void handleQuestionValueChange(int? value) {
-    indexAnswer.value = value!;
-  }
-
-  void handleSuspenseList(String? value) {
+  Future<void> createAnswers(List<QuestionResponse> questions) async {
     int index = 0;
-
-    for (final answer in answers) {
-      if (answer == value) {
-        indexAnswer.value = index;
-        return;
-      }
+    while (index < questions.length) {
+      answers.add(
+        Answer(
+          questionId: questions[index].id,
+          answerDescription: '',
+          questionDescriptionId: [],
+        ),
+      );
+      indexAnswer.add(0);
+      final RxList<bool> initialValue = <bool>[].obs;
+      valueAnswer.add(initialValue);
       index++;
     }
   }
 
+  List<String> getDescriptionAnswers(
+      List<Description> descriptions, int index) {
+    final List<String> answers = [];
+    for (Description description in descriptions) {
+      answers.add(description.description);
+      valueAnswer[index].add(false);
+    }
+    return answers;
+  }
+
+  Future<void> postAnswers() async {
+    isLoading.value = true;
+    try {
+      // final response = await _quizProvider.registerQuiz(
+      //   userId,
+      //   quiz.value.id,
+      //   answers,
+      // );
+      for (var answer in answers) {
+        print(userId);
+        print(quiz.value.id);
+        print(answer.toJson());
+      }
+
+      isLoading.value = false;
+      if (isLoading.value) {
+        Get.back();
+        Get.toNamed(Routes.ANSWERS, arguments: quiz.value.id);
+      }
+    } on MegaResponseException catch (e) {
+      isLoading.value = false;
+      Get.snackbar(
+        'Algo deu errado!',
+        e.message!,
+        colorText: MoralarColors.veryLightPink,
+        backgroundColor: MoralarColors.strawberry,
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+  }
+
+  Future<void> verifyAnswer(int index) async {
+    final questions = quiz.value.questionViewModel;
+
+    if (questions[index].typeResponse == 1) {
+      int i = 0;
+      String response = '';
+      answers[index].questionDescriptionId!.clear();
+      for (bool value in valueAnswer[index]) {
+        if (value) {
+          answers[index]
+              .questionDescriptionId!
+              .add(questions[index].description[i].id);
+          response += '${questions[index].description[i].description} ';
+        }
+        i++;
+      }
+      if (response.isEmpty) {
+        Get.snackbar(
+          'Algo deu errado!',
+          'Selecione pelo menos uma resposta',
+          colorText: MoralarColors.veryLightPink,
+          backgroundColor: MoralarColors.strawberry,
+          snackPosition: SnackPosition.TOP,
+        );
+      } else {
+        answers[index].answerDescription = response;
+      }
+    } else {
+      if (answers[index].answerDescription!.isEmpty) {
+        if (questions[index].typeResponse == 0) {
+          Get.snackbar(
+            'Algo deu errado!',
+            'Digite uma resposta para prosseguir',
+            colorText: MoralarColors.veryLightPink,
+            backgroundColor: MoralarColors.strawberry,
+            snackPosition: SnackPosition.TOP,
+          );
+          return;
+        } else {
+          answers[index].answerDescription =
+              questions[index].description[0].description;
+          answers[index]
+              .questionDescriptionId!
+              .add(questions[index].description[0].id);
+        }
+      }
+    }
+    if (index + 1 == questions.length) {
+      postAnswers();
+    } else {
+      pageController.nextPage(
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.ease,
+      );
+    }
+  }
+
   @override
-  void onClose() {}
-  void increment() => count.value++;
+  void onInit() {
+    super.onInit();
+    questionId = ids[0];
+    userId = ids[1];
+    getQuizDetails();
+  }
 }
