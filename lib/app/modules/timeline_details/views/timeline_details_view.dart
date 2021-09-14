@@ -51,13 +51,23 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                           return QuizTTSCard(
                             quiz: controller.quest[index],
                             function: () {
-                              Get.toNamed(
-                                Routes.QUIZ,
-                                arguments: [
-                                  controller.quest[index].id,
-                                  controller.user.id,
-                                ],
-                              );
+                              if (controller.quest[index].typeStatus == 1) {
+                                Get.toNamed(
+                                  Routes.ANSWERS,
+                                  arguments: [
+                                    controller.quest[index].id,
+                                    controller.user.familyId,
+                                  ],
+                                );
+                              } else {
+                                Get.toNamed(
+                                  Routes.QUIZ,
+                                  arguments: [
+                                    controller.quest[index].id,
+                                    controller.user.familyId,
+                                  ],
+                                );
+                              }
                             },
                           );
                         }),
@@ -98,13 +108,23 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                           return QuizTTSCard(
                             quiz: controller.enq[index],
                             function: () {
-                              Get.toNamed(
-                                Routes.QUIZ,
-                                arguments: [
-                                  controller.enq[index].id,
-                                  controller.user.id,
-                                ],
-                              );
+                              if (controller.enq[index].typeStatus == 1) {
+                                Get.toNamed(
+                                  Routes.ANSWERS,
+                                  arguments: [
+                                    controller.enq[index].id,
+                                    controller.user.familyId,
+                                  ],
+                                );
+                              } else {
+                                Get.toNamed(
+                                  Routes.QUIZ,
+                                  arguments: [
+                                    controller.enq[index].id,
+                                    controller.user.familyId,
+                                  ],
+                                );
+                              }
                             },
                           );
                         }),

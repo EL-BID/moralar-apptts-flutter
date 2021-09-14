@@ -32,11 +32,15 @@ class QuizProvider extends RemoteProvider {
     }
   }
 
-  Future<List<AnswerDetails>> getAnswerDetails(String id) async {
+  Future<List<AnswerDetails>> getAnswerDetails(
+      String quizId, String familyId) async {
     try {
       final response = await get(
-        Urls.family.response,
-        queryParameters: {'quizId': id},
+        Urls.tts.responseByFamily,
+        queryParameters: {
+          'familyId': familyId,
+          'quizId': quizId,
+        },
       );
       return (response.data as List)
           .map((item) => AnswerDetails.fromJson(item))

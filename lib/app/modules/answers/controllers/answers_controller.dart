@@ -1,18 +1,72 @@
 import 'package:get/get.dart';
+import 'package:mega_flutter/mega_flutter.dart';
+import 'package:moralar_widgets/moralar_widgets.dart';
+
+import '../../../providers/quiz_provider.dart';
 
 class AnswersController extends GetxController {
-  final count = 0.obs;
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  // }
+  final _quizProvider = Get.find<QuizProvider>();
+  final isLoading = false.obs;
+  final title = 'Questionário ou Enquete'.obs;
+  final multiplyResponses = [<bool>[]];
+  final questionResponses = [<String>[]];
+  String familyId = '';
+  String quizId = '';
+  final List<String> ids = Get.arguments;
 
-  // @override
-  // void onReady() {
-  //   super.onReady();
-  // }
+  //Classes
+  final answer = <AnswerDetails>[].obs;
+  final quiz = QuizDetails(
+    id: Get.arguments[0],
+    questionViewModel: [],
+    title: '',
+    typeQuiz: 0,
+  ).obs;
+
+  Future<void> getAnswers() async {
+    isLoading.value = true;
+    try {
+      answer.value = await _quizProvider.getAnswerDetails(quizId, familyId);
+      isLoading.value = false;
+      title.value = answer[0].title;
+      getQuiz();
+    } on MegaResponseException catch (e) {
+      isLoading.value = false;
+      Get.snackbar(
+        'Algo deu errado!',
+        e.message!,
+        colorText: MoralarColors.veryLightPink,
+        backgroundColor: MoralarColors.strawberry,
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+  }
+
+  Future<void> getQuiz() async {
+    isLoading.value = true;
+    try {
+      quiz.value = await _quizProvider.getQuizDetails(quizId);
+      isLoading.value = false;
+    } on MegaResponseException catch (e) {
+      isLoading.value = false;
+      Get.snackbar(
+        'Algo deu errado!',
+        e.message!,
+        colorText: MoralarColors.veryLightPink,
+        backgroundColor: MoralarColors.strawberry,
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    quizId = ids[0];
+    familyId = ids[1];
+    getAnswers();
+  }
 
   @override
   void onClose() {}
-  void increment() => count.value++;
 }
