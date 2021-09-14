@@ -81,4 +81,16 @@ class ProfileProvider extends RemoteProvider {
       rethrow;
     }
   }
+
+  Future<ScheduleDetails> detailsReunionPGM(String familyId) async {
+    try {
+      final response = await get(
+        '${Urls.tts.detailsReunionPGM}/$familyId',
+      );
+      return ScheduleDetails.fromJson(response.data);
+    } on MegaResponseException catch (e) {
+      debugPrint(e.message);
+      rethrow;
+    }
+  }
 }
