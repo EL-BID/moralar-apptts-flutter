@@ -41,14 +41,26 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                     child: SchedulingTTSCard(
                       status: controller.user.typeSubject,
                       schedule: controller.scheduleDetails.value,
+                      function: () {
+                        controller.changeTypeSubject(8);
+                      },
                     ),
-                    replacement: MoralarButton(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Text('Liberar Etapa', style: textTheme.button),
-                      ),
-                      onPressed: () {},
-                    ),
+                    replacement: Obx(() {
+                      return Container(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        child: MoralarButton(
+                          isLoading: controller.isButtonLoading.value,
+                          child: Container(
+                            alignment: Alignment.center,
+                            child:
+                                Text('Liberar Etapa', style: textTheme.button),
+                          ),
+                          onPressed: () {
+                            controller.changeTypeSubject(2);
+                          },
+                        ),
+                      );
+                    }),
                   ),
                 );
               }),

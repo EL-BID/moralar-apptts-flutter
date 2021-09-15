@@ -93,4 +93,27 @@ class ProfileProvider extends RemoteProvider {
       rethrow;
     }
   }
+
+  Future<bool> changeTypeSubject(FamilyTTS schedule, int typeSubject) async {
+    try {
+      schedule.typeScheduleStatus = 4;
+      schedule.date = (DateTime.now().millisecondsSinceEpoch / 1000).round();
+      await post(Urls.family.changeStatusSchedule, body: schedule.toJson());
+      await post(
+        Urls.tts.changeTypeSubject,
+        body: {
+          'place': schedule.place,
+          'description': schedule.description,
+          'date': schedule.date,
+          'familyId': schedule.familyId,
+          'typeSubject': typeSubject,
+          'id': schedule.id,
+        },
+      );
+      return true;
+    } on MegaResponseException catch (e) {
+      debugPrint(e.message);
+      rethrow;
+    }
+  }
 }

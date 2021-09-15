@@ -3,13 +3,16 @@ import 'package:mega_flutter/mega_flutter.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
 import '../../../providers/profile_provider.dart';
+import '../../timeline/controllers/timeline_controller.dart';
 
 class TimelineDetailsController extends GetxController {
   final _profileProvider = Get.find<ProfileProvider>();
+  final _timelineController = Get.find<TimelineController>();
   final isScheduleLoading = false.obs;
   final isQuestLoading = false.obs;
   final isEnqLoading = false.obs;
   final isCourseLoading = false.obs;
+  final isButtonLoading = false.obs;
 
   //Classes
   final FamilyTTS user = Get.arguments;
@@ -91,6 +94,36 @@ class TimelineDetailsController extends GetxController {
   Future<void> getReunionPGM() async {
     scheduleDetails.value =
         await _profileProvider.detailsReunionPGM(user.familyId);
+  }
+
+  Future<void> changeTypeSubject(int typeSubject) async {
+    isButtonLoading.value = false;
+    try {
+      final response =
+          await _profileProvider.changeTypeSubject(user, typeSubject);
+      if (response) {
+        isButtonLoading.value = false;
+        _timelineController.familys.value = [];
+        Get.back();
+        Get.snackbar(
+          'Nova fase do agendamento.',
+          'Verifique novamente!',
+          colorText: MoralarColors.veryLightPink,
+          backgroundColor: MoralarColors.strawberry,
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+      isButtonLoading.value = false;
+    } on MegaResponseException catch (e) {
+      isButtonLoading.value = false;
+      Get.snackbar(
+        'Algo deu errado!',
+        e.message!,
+        colorText: MoralarColors.veryLightPink,
+        backgroundColor: MoralarColors.strawberry,
+        snackPosition: SnackPosition.TOP,
+      );
+    }
   }
 
   @override
