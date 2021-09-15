@@ -86,7 +86,9 @@ class EditView extends GetView<EditController> {
                             ),
                             Validatorless.cpf('Digite um CPF existente')
                           ],
-                          keyboard: TextInputType.number,
+                          keyboard: const TextInputType.numberWithOptions(
+                            signed: true,
+                          ),
                           labelStyle: textTheme.bodyText1?.copyWith(
                               color: MoralarColors.waterBlue, fontSize: 16),
                         ),

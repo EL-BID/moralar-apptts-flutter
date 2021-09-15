@@ -42,7 +42,13 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                       status: controller.user.typeSubject,
                       schedule: controller.scheduleDetails.value,
                     ),
-                    replacement: const PropertyTTSCard(isHouse: true),
+                    replacement: MoralarButton(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text('Liberar Etapa', style: textTheme.button),
+                      ),
+                      onPressed: () {},
+                    ),
                   ),
                 );
               }),
