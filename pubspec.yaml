@@ -6,10 +6,9 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies: 
-  moralar_widgets:  
-    path: '../moralar-widgets'
-    # git:
-    #   url: git@github.com:lucasbatista-megaleios/moralar-widgets.git
+  moralar_widgets:
+    git:
+      url: git@github.com:megaleios-git/moralar-widgets.git
   mega_flutter:
     git:
       url: git@github.com:megaleios-git/mega-flutter
