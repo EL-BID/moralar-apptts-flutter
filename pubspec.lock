@@ -191,9 +191,11 @@ packages:
   moralar_widgets:
     dependency: "direct main"
     description:
-      path: "../moralar-widgets"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: f15f96322eefb3add693a5d9d3edccc2407ab606
+      url: "git@github.com:megaleios-git/moralar-widgets.git"
+    source: git
     version: "0.0.1"
   path:
     dependency: transitive
