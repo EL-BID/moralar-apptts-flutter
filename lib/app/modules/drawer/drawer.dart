@@ -55,8 +55,8 @@ class DrawerView extends GetView<TimelineController> {
         ),
       ],
       signOut: () async {
-        await MegaFlutter.instance.auth.signOut();
         Get.offAndToNamed(Routes.SPLASH);
+        await MegaFlutter.instance.auth.signOut();
       },
     );
   }
