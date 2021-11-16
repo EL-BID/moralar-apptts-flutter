@@ -18,6 +18,7 @@ class QuizzesController extends GetxController {
       isLoading.value = false;
     } on MegaResponseException catch (e) {
       isLoading.value = false;
+      print("AAAAA");
       Get.snackbar(
         'Algo deu errado!',
         e.message!,

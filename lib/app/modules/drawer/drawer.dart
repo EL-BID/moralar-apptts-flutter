@@ -22,7 +22,9 @@ class DrawerView extends GetView<TimelineController> {
           titleText: 'Famílias',
           icon: FontAwesomeIcons.bars,
           onTap: () {
-            Get.toNamed(Routes.TIMELINE);
+            Navigator.of(context)
+                .popUntil(ModalRoute.withName(Routes.TIMELINE));
+            // Get.toNamed(Routes.TIMELINE);
           },
         ),
         MoralarDrawerListTile(
@@ -32,13 +34,13 @@ class DrawerView extends GetView<TimelineController> {
             Get.toNamed(Routes.MATCHS);
           },
         ),
-        // MoralarDrawerListTile(
-        //   titleText: 'Questionários',
-        //   icon: FontAwesomeIcons.solidQuestionCircle,
-        //   onTap: () {
-        //     Get.toNamed(Routes.QUIZZES);
-        //   },
-        // ),
+        MoralarDrawerListTile(
+          titleText: 'Questionários',
+          icon: FontAwesomeIcons.solidQuestionCircle,
+          onTap: () {
+            Get.toNamed(Routes.QUIZZES);
+          },
+        ),
         MoralarDrawerListTile(
           titleText: 'Editar Perfil',
           icon: FontAwesomeIcons.userAlt,

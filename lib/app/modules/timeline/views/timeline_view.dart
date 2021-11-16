@@ -17,12 +17,6 @@ class TimelineView extends GetView<TimelineController> {
           icon: const Icon(FontAwesomeIcons.bars, color: Colors.black),
           onPressed: () => Get.toNamed(Routes.MENU),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(FontAwesomeIcons.ellipsisV, color: Colors.black),
-            onPressed: Get.back,
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -87,8 +81,18 @@ class TimelineView extends GetView<TimelineController> {
                         vertical: 24,
                       ),
                       child: MoralarButton(
-                        onPressed: () {},
-                        child: Container(
+                        onPressed: () {
+                          controller.extractReport();
+                        },
+                        child: controller.isLoadingReport.value
+                            ? const Center(
+                              child: const CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                ),
+                              ),
+                            )
+                            : Container(
                           alignment: Alignment.center,
                           child: Text(
                             'Extrair Relatório',

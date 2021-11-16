@@ -8,6 +8,7 @@ import '../../../providers/profile_provider.dart';
 class TimelineController extends GetxController {
   final _profileProvider = Get.find<ProfileProvider>();
   final isLoading = false.obs;
+  final isLoadingReport = false.obs;
 
   //classes
   final user = TTS(jobPost: '', name: '', cpf: '', email: '', id: '').obs;
@@ -73,6 +74,45 @@ class TimelineController extends GetxController {
         snackPosition: SnackPosition.TOP,
       );
     }
+  }
+
+  Future<bool> extractReport() async{
+
+
+    String typeSubject = '';
+
+    if (hintStatus.value != 'Selecionar') {
+      typeSubject = hintStatus.value;
+    }
+
+    if (familySearch.text.isEmpty && typeSubject.isEmpty) {
+      Get.snackbar(
+        'Algo deu errado!',
+        'Preencha pelo menos um campo.',
+        colorText: MoralarColors.veryLightPink,
+        backgroundColor: MoralarColors.strawberry,
+        snackPosition: SnackPosition.TOP,
+      );
+    } else {
+      isLoadingReport.value = true;
+      try {
+        bool value = await _profileProvider.extractReport(
+          familySearch.text,
+          typeSubject,
+        );
+        isLoadingReport.value = false;
+      } on MegaResponseException catch (e) {
+        isLoadingReport.value = false;
+        Get.snackbar(
+          'Algo deu errado!',
+          e.message!,
+          colorText: MoralarColors.veryLightPink,
+          backgroundColor: MoralarColors.strawberry,
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+    }
+    return true;
   }
 
   @override

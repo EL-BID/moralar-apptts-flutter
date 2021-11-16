@@ -34,6 +34,11 @@ class QuizProvider extends RemoteProvider {
 
   Future<List<AnswerDetails>> getAnswerDetails(
       String quizId, String familyId) async {
+    print(Urls.tts.responseByFamily);
+    print({
+      'familyId': familyId,
+      'quizId': quizId,
+    }.toString());
     try {
       final response = await get(
         Urls.tts.responseByFamily,
@@ -46,6 +51,7 @@ class QuizProvider extends RemoteProvider {
           .map((item) => AnswerDetails.fromJson(item))
           .toList();
     } on MegaResponseException catch (e) {
+      print(e);
       debugPrint(e.message);
       rethrow;
     }

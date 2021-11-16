@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mega_flutter/mega_flutter.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
+import 'package:dio/dio.dart';
 
 class ProfileProvider extends RemoteProvider {
   Future<TTS> getInfo() async {
@@ -110,6 +111,23 @@ class ProfileProvider extends RemoteProvider {
           'id': schedule.id,
         },
       );
+      return true;
+    } on MegaResponseException catch (e) {
+      debugPrint(e.message);
+      rethrow;
+    }
+  }
+
+  Future<bool> extractReport(String searchTerm, String typeSubject) async{
+    try {
+      final response = await post2(
+        Urls.tts.timelineExport,
+        body: {
+          'searchTerm': searchTerm,
+          'typeSubject': typeSubject,
+        },
+      );
+      print(response);
       return true;
     } on MegaResponseException catch (e) {
       debugPrint(e.message);
