@@ -1,7 +1,16 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:mega_flutter/mega_flutter.dart';
+import 'package:mime_type/mime_type.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 import 'package:dio/dio.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 class ProfileProvider extends RemoteProvider {
   Future<TTS> getInfo() async {
@@ -120,6 +129,8 @@ class ProfileProvider extends RemoteProvider {
 
   Future<bool> extractReport(String searchTerm, String typeSubject) async{
     try {
+      // var dir = await getApplicationDocumentsDirectory();
+      // var downloadPath = '${dir.path}/tst.xlsx';
       final response = await post2(
         Urls.tts.timelineExport,
         body: {
@@ -127,7 +138,23 @@ class ProfileProvider extends RemoteProvider {
           'typeSubject': typeSubject,
         },
       );
+      final filename = 'file.xlsx';
+      Directory tempDir = await getApplicationSupportDirectory();
+      String tempPath = tempDir.path;
+      File file = new File('$tempPath/$filename');
+      List<int> list = response.toString().codeUnits;
+      Uint8List bytes = Uint8List.fromList(list);
+      await file.writeAsBytes(bytes);
+      print(file.path);
+      print(await file.length());
+      print(await file.path);
       print(response);
+      await FlutterShare.shareFile(
+        title: 'Example share',
+        text: 'Example share text',
+        filePath: file.path,
+      );
+      // OpenFile.open(file.path);
       return true;
     } on MegaResponseException catch (e) {
       debugPrint(e.message);
