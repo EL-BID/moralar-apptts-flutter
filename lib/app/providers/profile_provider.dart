@@ -129,32 +129,24 @@ class ProfileProvider extends RemoteProvider {
 
   Future<bool> extractReport(String searchTerm, String typeSubject) async{
     try {
-      // var dir = await getApplicationDocumentsDirectory();
-      // var downloadPath = '${dir.path}/tst.xlsx';
-      final response = await post2(
+      final user = MegaFlutter.instance.auth.currentUser as TTS;
+      const filename = 'TimeLine.xlsx';
+
+      http.Response response = await getHttp(
+        MoralarWidgets.instance.baseUrlForHTTP,
         Urls.tts.timelineExport,
+        {
+          "Authorization" : "Bearer ${user.token.accessToken.toString()}"
+        },
         body: {
-          'searchTerm': searchTerm,
-          'typeSubject': typeSubject,
+          "SearchTerm" : searchTerm,
         },
       );
-      final filename = 'file.xlsx';
-      Directory tempDir = await getApplicationSupportDirectory();
-      String tempPath = tempDir.path;
-      File file = new File('$tempPath/$filename');
-      List<int> list = response.toString().codeUnits;
-      Uint8List bytes = Uint8List.fromList(list);
-      await file.writeAsBytes(bytes);
-      print(file.path);
-      print(await file.length());
-      print(await file.path);
-      print(response);
-      await FlutterShare.shareFile(
-        title: 'Example share',
-        text: 'Example share text',
-        filePath: file.path,
-      );
-      // OpenFile.open(file.path);
+
+      final String dir = (await getApplicationDocumentsDirectory()).path;
+      final File file = File('$dir/$filename');
+      await file.writeAsBytes(response.bodyBytes);
+      OpenFile.open(file.path);
       return true;
     } on MegaResponseException catch (e) {
       debugPrint(e.message);
