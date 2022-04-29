@@ -17,8 +17,13 @@ class TimelineController extends GetxController {
   final TextEditingController familySearch = TextEditingController();
   final hintStatus = 'Selecionar'.obs;
   final filterStatus = [
+    "Visita do TTS",
+    "Reunião com TTS",
     'Reunião PGM',
+    "Visita ao imóvel",
     'Escolha do imóvel',
+    "Demolição",
+    "Outros",
     'Mudança',
     'Acompanhamento pós-mudança',
   ];
@@ -96,9 +101,9 @@ class TimelineController extends GetxController {
     } else {
       isLoadingReport.value = true;
       try {
-        bool value = await _profileProvider.extractReport(
+        await _profileProvider.extractReport(
           familySearch.text,
-          typeSubject,
+          getEnum(typeSubject),
         );
         isLoadingReport.value = false;
       } on MegaResponseException catch (e) {
@@ -113,6 +118,30 @@ class TimelineController extends GetxController {
       }
     }
     return true;
+  }
+
+  int getEnum(String value){
+    switch(value){
+      case"Visita do TTS":
+        return 0;
+      case"Reunião com TTS":
+        return 1;
+      case"Reunião PGM":
+        return 2;
+      case"Visita ao imóvel":
+        return 3;
+      case"Escolha do imóvel":
+        return 4;
+      case"Demolição":
+        return 5;
+      case"Outros":
+        return 6;
+      case"Mudança":
+        return 7;
+      case"Acompanhamento pós-mudança":
+        return 8;
+    }
+    return 0;
   }
 
   @override

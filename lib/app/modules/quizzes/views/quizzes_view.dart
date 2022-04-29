@@ -41,13 +41,13 @@ class QuizzesView extends GetView<QuizzesController> {
                             if (controller.quizzes[index].typeStatus == 1) {
                               Get.toNamed(
                                 Routes.ANSWERS,
-                                arguments: controller.quizzes[index].id,
+                                arguments: [
+                                  controller.quizzes[index].quizId,
+                                  controller.quizzes[index].familyId,
+                                ],
                               );
                             } else {
-                              Get.toNamed(
-                                Routes.QUIZ,
-                                arguments: controller.quizzes[index].id,
-                              );
+                              // Get
                             }
                           },
                         ),

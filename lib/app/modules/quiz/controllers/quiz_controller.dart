@@ -25,6 +25,7 @@ class QuizController extends GetxController {
     questionViewModel: [],
     title: '',
     typeQuiz: 0,
+    created: 0
   ).obs;
   final answers = <Answer>[];
 

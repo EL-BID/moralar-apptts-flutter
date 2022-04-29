@@ -6,11 +6,12 @@ class QuizProvider extends RemoteProvider {
   Future<List<Quiz>> getQuiz() async {
     try {
       final response = await get(
-        Urls.tts.quiz,
+        Urls.tts.quiz + "1",
         queryParameters: {
           'typeQuiz': 'Quiz',
         },
       );
+      print(response.data);
       return (response.data as List)
           .map((item) => Quiz.fromJson(item))
           .toList();
@@ -41,12 +42,9 @@ class QuizProvider extends RemoteProvider {
     }.toString());
     try {
       final response = await get(
-        Urls.tts.responseByFamily,
-        queryParameters: {
-          'familyId': familyId,
-          'quizId': quizId,
-        },
+        "${Urls.tts.responseByFamily}?quizId=${quizId}&familyId=${familyId}"
       );
+      print(response.data);
       return (response.data as List)
           .map((item) => AnswerDetails.fromJson(item))
           .toList();

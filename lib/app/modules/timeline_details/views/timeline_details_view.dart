@@ -36,7 +36,7 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                       ),
                     ),
                   ),
-                  replacement: Visibility(
+                  replacement: controller.scheduleDetails.value.date != null ? Visibility(
                     visible: controller.user.typeSubject != 4,
                     child: SchedulingTTSCard(
                       status: controller.user.typeSubject,
@@ -61,7 +61,7 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                         ),
                       );
                     }),
-                  ),
+                  ) : SizedBox(),
                 );
               }),
               FamilyInfoCard(
@@ -93,14 +93,6 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                               if (controller.quest[index].typeStatus == 1) {
                                 Get.toNamed(
                                   Routes.ANSWERS,
-                                  arguments: [
-                                    controller.quest[index].id,
-                                    controller.user.familyId,
-                                  ],
-                                );
-                              } else {
-                                Get.toNamed(
-                                  Routes.QUIZ,
                                   arguments: [
                                     controller.quest[index].id,
                                     controller.user.familyId,
@@ -150,14 +142,6 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                               if (controller.enq[index].typeStatus == 1) {
                                 Get.toNamed(
                                   Routes.ANSWERS,
-                                  arguments: [
-                                    controller.enq[index].id,
-                                    controller.user.familyId,
-                                  ],
-                                );
-                              } else {
-                                Get.toNamed(
-                                  Routes.QUIZ,
                                   arguments: [
                                     controller.enq[index].id,
                                     controller.user.familyId,

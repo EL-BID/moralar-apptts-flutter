@@ -20,20 +20,6 @@ class EditView extends GetView<EditController> {
             key: controller.formKey,
             child: Column(
               children: [
-                Text(
-                  'Editar Perfil',
-                  style: textTheme.headline2?.copyWith(
-                    fontSize: 24,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  // ignore: lines_longer_than_80_chars
-                  'Lorem ipsum dolor sit amet, consectetur  adi sed do eiusmod tempor  incididunt ut labore etdolore magna aliqua.  Ut enim ad minim veniam.',
-                  style: textTheme.bodyText1,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
                 Obx(() {
                   return Visibility(
                     visible: controller.isLoading.value,

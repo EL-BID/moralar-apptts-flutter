@@ -1,9 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_share/flutter_share.dart';
 import 'package:mega_flutter/mega_flutter.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
@@ -11,6 +11,7 @@ import 'package:dio/dio.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:share/share.dart';
 
 class ProfileProvider extends RemoteProvider {
   Future<TTS> getInfo() async {
@@ -94,9 +95,11 @@ class ProfileProvider extends RemoteProvider {
 
   Future<ScheduleDetails> detailsReunionPGM(String familyId) async {
     try {
+      print(familyId);
       final response = await get(
         '${Urls.tts.detailsReunionPGM}/$familyId',
       );
+      log(response.data.toString());
       return ScheduleDetails.fromJson(response.data);
     } on MegaResponseException catch (e) {
       debugPrint(e.message);
@@ -127,7 +130,7 @@ class ProfileProvider extends RemoteProvider {
     }
   }
 
-  Future<bool> extractReport(String searchTerm, String typeSubject) async{
+  Future<bool> extractReport(String searchTerm, int typeSubject) async{
     try {
       final user = MegaFlutter.instance.auth.currentUser as TTS;
       const filename = 'TimeLine.xlsx';
@@ -140,13 +143,15 @@ class ProfileProvider extends RemoteProvider {
         },
         body: {
           "SearchTerm" : searchTerm,
+          "TypeSubject" : typeSubject.toString(),
         },
       );
 
       final String dir = (await getApplicationDocumentsDirectory()).path;
       final File file = File('$dir/$filename');
       await file.writeAsBytes(response.bodyBytes);
-      OpenFile.open(file.path);
+      // OpenFile.open(file.path);
+      Share.shareFiles([file.path]);
       return true;
     } on MegaResponseException catch (e) {
       debugPrint(e.message);

@@ -12,7 +12,7 @@ class AnswersController extends GetxController {
   final questionResponses = [<String>[]];
   String familyId = '';
   String quizId = '';
-  final List<String> ids = Get.arguments;
+  final List<String?> ids = Get.arguments;
 
   //Classes
   final answer = <AnswerDetails>[].obs;
@@ -21,6 +21,7 @@ class AnswersController extends GetxController {
     questionViewModel: [],
     title: '',
     typeQuiz: 0,
+    created: 0
   ).obs;
 
   Future<void> getAnswers() async {
@@ -62,8 +63,8 @@ class AnswersController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    quizId = ids[0];
-    familyId = ids[1];
+    quizId = ids[0]!;
+    familyId = ids[1]!;
     getAnswers();
   }
 

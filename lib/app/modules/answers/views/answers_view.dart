@@ -68,22 +68,82 @@ class AnswersView extends GetView<AnswersController> {
                 ),
               ),
               replacement: Column(
-                children: List.generate(controller.answer.length, (index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        controller.answer[index].question,
-                        style: textTheme.bodyText2?.copyWith(
-                          color: MoralarColors.waterBlue,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Dados do morador",
+                    style: textTheme.bodyText2?.copyWith(
+                        color: MoralarColors.waterBlue,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)
+                  ),
+                  const SizedBox(height: 10,),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Cadastro: ${controller.title}",
+                          style: textTheme.bodyText2?.copyWith(fontSize: 16)
                         ),
-                      ),
-                      const SizedBox(height: 32),
-                      _content(index),
-                      const SizedBox(height: 32),
-                    ],
-                  );
-                }),
+                        const SizedBox(height: 10,),
+                        Text(
+                          "Nome: ${controller.title}",
+                          style: textTheme.bodyText2?.copyWith(fontSize: 16)
+                        ),
+                        const SizedBox(height: 10,),
+                        Text(
+                          "CPF: ${controller.title}",
+                          style: textTheme.bodyText2?.copyWith(fontSize: 16)
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20,),
+                  Text(
+                    "Dados do questionário",
+                    style: textTheme.bodyText2?.copyWith(
+                        color: MoralarColors.waterBlue,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)
+                  ),
+                  const SizedBox(height: 10,),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Data: ${MoralarDate.secondsForDateHours(controller.quiz.value.created).substring(0, 10)}",
+                          style: textTheme.bodyText2?.copyWith(fontSize: 16)
+                        ),
+                        const SizedBox(height: 10,),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20,),
+                  ListView(
+                    shrinkWrap: true,
+                    children: List.generate(controller.answer.length,
+                            (index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                controller.answer[index].question,
+                                style: textTheme.bodyText2?.copyWith(
+                                  color: MoralarColors.waterBlue,
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              _content(index),
+                              const SizedBox(height: 32),
+                            ],
+                          );
+                        }),
+                  )
+                ],
               ),
             ),
           ),

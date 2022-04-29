@@ -32,7 +32,13 @@ class EditController extends GetxController {
       job.text = user.value.jobPost;
       cpf.text = UtilBrasilFields.obterCpf(user.value.cpf);
       email.text = user.value.email;
-      tel.text = UtilBrasilFields.obterTelefone(user.value.phone ?? '');
+      if (user.value.phone != null && user.value.phone != "") {
+        if(user.value.phone!.length > 11){
+          tel.text = UtilBrasilFields.obterTelefone(user.value.phone!.substring(2, 13));
+        }else{
+          tel.text = UtilBrasilFields.obterTelefone(user.value.phone!);
+        }
+      }
       isLoading.value = false;
     } on MegaResponseException catch (e) {
       isLoading.value = false;
