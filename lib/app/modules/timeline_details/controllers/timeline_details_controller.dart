@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:mega_flutter/mega_flutter.dart';
+import 'package:moralar_tts/app/providers/matchs_provider.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
 import '../../../providers/profile_provider.dart';
@@ -8,7 +9,9 @@ import '../../timeline/controllers/timeline_controller.dart';
 class TimelineDetailsController extends GetxController {
   final _profileProvider = Get.find<ProfileProvider>();
   final _timelineController = Get.find<TimelineController>();
+  final _matchsProvider = Get.find<MatchsProvider>();
   final isScheduleLoading = false.obs;
+  final isMatchsLoading = false.obs;
   final isQuestLoading = false.obs;
   final isEnqLoading = false.obs;
   final isCourseLoading = false.obs;
@@ -16,10 +19,28 @@ class TimelineDetailsController extends GetxController {
 
   //Classes
   final FamilyTTS user = Get.arguments;
+  final properties = <Property>[].obs;
   final quest = <Quiz>[].obs;
   final enq = <Quiz>[].obs;
   final courses = <CourseTTS>[].obs;
   final scheduleDetails = ScheduleDetails(familyId: '', id: '').obs;
+
+  Future<void> getProperties() async {
+    isMatchsLoading.value = true;
+    try {
+      properties.value = await _matchsProvider.getMatchs(user.familyId);
+      isMatchsLoading.value = false;
+    } on MegaResponseException catch (e) {
+      isMatchsLoading.value = false;
+      Get.snackbar(
+        'Algo deu errado!',
+        e.message!,
+        colorText: MoralarColors.veryLightPink,
+        backgroundColor: MoralarColors.strawberry,
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+  }
 
   Future<void> getQuests() async {
     isQuestLoading.value = true;
@@ -128,6 +149,7 @@ class TimelineDetailsController extends GetxController {
 
   @override
   void onInit() {
+    getProperties();
     getScheduleDetails();
     getCourse();
     getEnqs();

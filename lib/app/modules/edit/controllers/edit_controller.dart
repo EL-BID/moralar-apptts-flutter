@@ -35,8 +35,10 @@ class EditController extends GetxController {
       if (user.value.phone != null && user.value.phone != "") {
         if(user.value.phone!.length > 11){
           tel.text = UtilBrasilFields.obterTelefone(user.value.phone!.substring(2, 13));
-        }else{
+        }else if(user.value.phone!.length >= 10){
           tel.text = UtilBrasilFields.obterTelefone(user.value.phone!);
+        }else{
+          tel.text = user.value.phone ?? "";
         }
       }
       isLoading.value = false;

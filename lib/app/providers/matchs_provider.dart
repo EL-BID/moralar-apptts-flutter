@@ -21,4 +21,19 @@ class MatchsProvider extends RemoteProvider {
       rethrow;
     }
   }
+
+  Future<List<Property>> getMatchs(String id) async {
+    try {
+      final response = await get(
+        "${Urls.tts.matchsFamily}/$id",
+      );
+      print(response.data);
+      return (response.data as List)
+          .map((item) => Property.fromJson(item))
+          .toList();
+    } on MegaResponseException catch (e) {
+      debugPrint(e.message);
+      rethrow;
+    }
+  }
 }

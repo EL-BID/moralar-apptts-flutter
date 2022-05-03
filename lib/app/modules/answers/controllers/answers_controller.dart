@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
 import 'package:mega_flutter/mega_flutter.dart';
+import 'package:moralar_tts/app/providers/profile_provider.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
 import '../../../providers/quiz_provider.dart';
 
 class AnswersController extends GetxController {
+  final _profileProvider = Get.find<ProfileProvider>();
   final _quizProvider = Get.find<QuizProvider>();
   final isLoading = false.obs;
   final title = 'Questionário ou Enquete'.obs;
@@ -13,6 +15,8 @@ class AnswersController extends GetxController {
   String familyId = '';
   String quizId = '';
   final List<String?> ids = Get.arguments;
+
+  final user = TTS(jobPost: '', name: '', cpf: '', email: '', id: '').obs;
 
   //Classes
   final answer = <AnswerDetails>[].obs;
@@ -60,9 +64,27 @@ class AnswersController extends GetxController {
     }
   }
 
+  Future<void> getInfo() async {
+    isLoading.value = true;
+    try {
+      user.value = await _profileProvider.getInfo();
+      isLoading.value = false;
+    } on MegaResponseException catch (e) {
+      isLoading.value = false;
+      Get.snackbar(
+        'Algo deu errado!',
+        e.message!,
+        colorText: MoralarColors.veryLightPink,
+        backgroundColor: MoralarColors.strawberry,
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
+    getInfo();
     quizId = ids[0]!;
     familyId = ids[1]!;
     getAnswers();

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:moralar_tts/app/providers/matchs_provider.dart';
 
 import '../../../providers/profile_provider.dart';
 import '../../timeline/controllers/timeline_controller.dart';
@@ -15,6 +16,9 @@ class TimelineDetailsBinding extends Bindings {
     );
     Get.lazyPut<ProfileProvider>(
       () => ProfileProvider(),
+    );
+    Get.lazyPut<MatchsProvider>(
+          () => MatchsProvider(),
     );
   }
 }
