@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:mega_flutter/mega_flutter.dart';
+import 'package:moralar_tts/app/providers/hive_provider.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
 import '../../../providers/profile_provider.dart';
 
 class TimelineController extends GetxController {
   final _profileProvider = Get.find<ProfileProvider>();
+  final _hiveProvider = Get.find<HiveProvider>();
   final isLoading = false.obs;
   final isLoadingReport = false.obs;
 
@@ -45,23 +49,31 @@ class TimelineController extends GetxController {
       );
     } else {
       isLoading.value = true;
-      try {
-        familys.value = await _profileProvider.searchTimeline(
-          familySearch.text,
-          typeSubject,
-        );
+      if (await hasNetwork()) {
+        try {
+          familys.value = await _profileProvider.searchTimeline(
+            familySearch.text,
+            typeSubject,
+          );
+          _hiveProvider.saveTimeline(familys.value);
+          isLoading.value = false;
+        } on MegaResponseException catch (e) {
+          isLoading.value = false;
+          Get.snackbar(
+            'Algo deu errado!',
+            e.message!,
+            colorText: MoralarColors.veryLightPink,
+            backgroundColor: MoralarColors.strawberry,
+            snackPosition: SnackPosition.TOP,
+          );
+        }
+      }else{
+        familys.value = await _hiveProvider.getTimeline();
         isLoading.value = false;
-      } on MegaResponseException catch (e) {
-        isLoading.value = false;
-        Get.snackbar(
-          'Algo deu errado!',
-          e.message!,
-          colorText: MoralarColors.veryLightPink,
-          backgroundColor: MoralarColors.strawberry,
-          snackPosition: SnackPosition.TOP,
-        );
+        print(familys.value);
       }
     }
+    print(familys.value);
   }
 
   Future<void> getInfo() async {
@@ -142,6 +154,15 @@ class TimelineController extends GetxController {
         return 8;
     }
     return 0;
+  }
+
+  Future<bool> hasNetwork() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } on SocketException catch (_) {
+      return false;
+    }
   }
 
   @override

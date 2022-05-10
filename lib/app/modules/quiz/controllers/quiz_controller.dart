@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mega_flutter/mega_flutter.dart';
+import 'package:moralar_tts/app/providers/hive_provider.dart';
 import 'package:moralar_widgets/moralar_widgets.dart';
 
 import '../../../providers/quiz_provider.dart';
@@ -8,6 +11,7 @@ import '../../../routes/app_pages.dart';
 
 class QuizController extends GetxController {
   final _quizProvider = Get.find<QuizProvider>();
+  final _hiveProvider = Get.find<HiveProvider>();
   final isLoading = false.obs;
   final hasPageView = false.obs;
   final List<String> ids = Get.arguments;
@@ -31,20 +35,32 @@ class QuizController extends GetxController {
 
   Future<void> getQuizDetails() async {
     isLoading.value = true;
-    try {
-      quiz.value = await _quizProvider.getQuizDetails(questionId);
-      await createAnswers(quiz.value.questionViewModel);
-      hasPageView.value = true;
+    if(await hasNetwork()){
+      try {
+        quiz.value = await _quizProvider.getQuizDetails(questionId);
+        _hiveProvider.saveQuizDetails(quiz.value);
+        await createAnswers(quiz.value.questionViewModel);
+        hasPageView.value = true;
+        isLoading.value = false;
+      } on MegaResponseException catch (e) {
+        isLoading.value = false;
+        Get.snackbar(
+          'Algo deu errado!',
+          e.message!,
+          colorText: MoralarColors.veryLightPink,
+          backgroundColor: MoralarColors.strawberry,
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+    }else {
+      final result = await _hiveProvider.getQuizDetails(questionId);
+      print(result?.title);
+      if(result != null){
+        quiz.value = result;
+        await createAnswers(quiz.value.questionViewModel);
+        hasPageView.value = true;
+      }
       isLoading.value = false;
-    } on MegaResponseException catch (e) {
-      isLoading.value = false;
-      Get.snackbar(
-        'Algo deu errado!',
-        e.message!,
-        colorText: MoralarColors.veryLightPink,
-        backgroundColor: MoralarColors.strawberry,
-        snackPosition: SnackPosition.TOP,
-      );
     }
   }
 
@@ -160,6 +176,15 @@ class QuizController extends GetxController {
         duration: const Duration(milliseconds: 500),
         curve: Curves.ease,
       );
+    }
+  }
+
+  Future<bool> hasNetwork() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } on SocketException catch (_) {
+      return false;
     }
   }
 

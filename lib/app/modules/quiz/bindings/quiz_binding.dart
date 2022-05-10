@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:moralar_tts/app/providers/hive_provider.dart';
 
 import '../../../providers/quiz_provider.dart';
 import '../../quizzes/controllers/quizzes_controller.dart';
@@ -15,6 +16,9 @@ class QuizBinding extends Bindings {
     );
     Get.lazyPut<QuizProvider>(
       () => QuizProvider(),
+    );
+    Get.lazyPut<HiveProvider>(
+      () => HiveProvider(),
     );
   }
 }

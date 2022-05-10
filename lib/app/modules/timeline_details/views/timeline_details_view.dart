@@ -12,63 +12,48 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
     return MoralarScaffold(
       appBar: MoralarAppBar(
         titleText: 'Detalhes',
-        backgroundColor: Family.statusColor(controller.user.typeSubject),
+        backgroundColor: Family.statusColor(controller.familyUser.typeSubject),
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              FamilyCard(family: controller.user, isDetail: true),
-              Obx(() {
-                return Visibility(
-                  visible: controller.isScheduleLoading.value,
-                  child: Container(
-                    padding: const EdgeInsets.only(bottom: 64),
-                    alignment: Alignment.center,
-                    child: SizedBox(
-                      height: 48,
-                      width: 48,
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).primaryColor,
+              FamilyCard(family: controller.familyUser, isDetail: true),
+              Obx((){
+                if(controller.user.value.isNotEmpty &&
+                    (controller.user.value.first.canNextStage ?? false)) {
+                  return Container(
+                    padding: const EdgeInsets.fromLTRB(16,0,16,20),
+                    child: MoralarButton(
+                      onPressed: () {
+                        controller.nextStage();
+                      },
+                      child: controller.isLoadingNextStage.value
+                          ? const Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        ),
+                      )
+                          : Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Liberar próxima etapa',
+                          style: textTheme.button,
                         ),
                       ),
                     ),
-                  ),
-                  replacement: controller.scheduleDetails.value.date != null ? Visibility(
-                    visible: controller.user.typeSubject != 4,
-                    child: SchedulingTTSCard(
-                      status: controller.user.typeSubject,
-                      schedule: controller.scheduleDetails.value,
-                      function: () {
-                        controller.changeTypeSubject(8);
-                      },
-                    ),
-                    replacement: Obx(() {
-                      return Container(
-                        padding: const EdgeInsets.only(bottom: 24),
-                        child: MoralarButton(
-                          isLoading: controller.isButtonLoading.value,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child:
-                                Text('Liberar Etapa', style: textTheme.button),
-                          ),
-                          onPressed: () {
-                            controller.changeTypeSubject(2);
-                          },
-                        ),
-                      );
-                    }),
-                  ) : SizedBox(),
-                );
+                  );
+                }
+                return const SizedBox();
               }),
-              if(controller.user.typeSubject == 4) FamilyInfoCard(
-                title: 'Imóveis escolhidos',
+              FamilyInfoCard(
+                title: 'Agendamentos',
                 cards: Obx(() {
                   return Visibility(
-                    visible: controller.isMatchsLoading.value,
+                    visible: controller.isLoading.value,
                     child: Container(
                       padding: const EdgeInsets.only(bottom: 64),
                       alignment: Alignment.center,
@@ -82,78 +67,113 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                         ),
                       ),
                     ),
-                    replacement: Visibility(
-                      visible: controller.properties.isNotEmpty,
-                      child: Column(
-                        children:
-                            List.generate(controller.properties.length, (index) {
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 24),
-                            padding: const EdgeInsets.all(20),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.7),
-                                  // spreadRadius: 1,
-                                  blurRadius: 3,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                Image.network(
-                                  controller.properties[index].photo![0],
-                                  fit: BoxFit.cover,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                MegaListTile(
-                                  title: controller.properties[index].code ?? "",
-                                  leading: Text("Código:", style: textTheme.bodyText1),
-                                  style: textTheme.bodyText1,
-                                ),
-                                MegaListTile(
-                                  title: (controller.properties[index].residencialPropertyFeatures.typeProperty == 0) ? 'Casa' : 'Apartamento',
-                                  leading: Icon(
-                                    (controller.properties[index].residencialPropertyFeatures.typeProperty == 0) ? Icons.house_outlined : Icons.apartment,
-                                    size: 16,
-                                    color: MoralarColors.brownGrey,
-                                  ),
-                                  style: textTheme.bodyText1,
-                                ),
-                                MegaListTile(
-                                  title: controller.properties[index].residencialPropertyAdress.neighborhood ?? "",
-                                  leading: const Icon(
-                                    Icons.location_on_outlined,
-                                    size: 16,
-                                    color: MoralarColors.brownGrey,
-                                  ),
-                                  style: textTheme.bodyText1,
-                                ),
-                                MegaListTile(
-                                  title: "${controller.properties[index].residencialPropertyFeatures.squareFootage.toString()} m\u00B2",
-                                  leading: const Icon(
-                                    Icons.edit_outlined,
-                                    size: 16,
-                                    color: MoralarColors.brownGrey,
-                                  ),
-                                  style: textTheme.bodyText1,
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
+                    replacement: (controller.user.value.isNotEmpty && controller.user.value.first.schedules!.isNotEmpty) ? Column(
+                      children:
+                      List.generate(controller.user.value.first.schedules!.length, (index) {
+                        return SchedulingTTSCard(
+                          status: controller.user.value.first.schedules![index].typeScheduleStatus!,
+                          schedule: controller.user.value.first.schedules![index],
+                          function: () {
+                            controller.changeTypeSubject(8);
+                          },
+                        );
+                      }),
+                    ) : Container(
+                      padding: const EdgeInsets.symmetric(vertical: 64),
+                      child: Text(
+                        'Nenhum agendamento encontrado',
+                        style: textTheme.headline1,
                       ),
-                      replacement: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 64),
-                        child: Text(
-                          'Nenhum imóvel encontrado',
-                          style: textTheme.headline1,
+                    ),
+                  );
+                }),
+              ),
+              if(controller.familyUser.typeSubject == 4) FamilyInfoCard(
+                title: 'Imóveis escolhidos',
+                cards: Obx(() {
+                  return Visibility(
+                    visible: controller.isLoading.value,
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 64),
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColor,
+                          ),
                         ),
+                      ),
+                    ),
+                    replacement: (controller.user.value.isNotEmpty && controller.user.value.first.interestResidencialProperty!.isNotEmpty) ? Column(
+                      children:
+                      List.generate(controller.user.value.first.interestResidencialProperty!.length, (index) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 24),
+                          padding: const EdgeInsets.all(20),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.7),
+                                // spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              Image.network(
+                                controller.user.value.first.interestResidencialProperty![index].photo![0],
+                                fit: BoxFit.cover,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              MegaListTile(
+                                title: controller.user.value.first.interestResidencialProperty![index].code ?? "",
+                                leading: Text("Código:", style: textTheme.bodyText1),
+                                style: textTheme.bodyText1,
+                              ),
+                              MegaListTile(
+                                title: (controller.user.value.first.interestResidencialProperty![index].residencialPropertyFeatures.typeProperty == 0) ? 'Casa' : 'Apartamento',
+                                leading: Icon(
+                                  (controller.user.value.first.interestResidencialProperty![index].residencialPropertyFeatures.typeProperty == 0) ? Icons.house_outlined : Icons.apartment,
+                                  size: 16,
+                                  color: MoralarColors.brownGrey,
+                                ),
+                                style: textTheme.bodyText1,
+                              ),
+                              MegaListTile(
+                                title: controller.user.value.first.interestResidencialProperty![index].residencialPropertyAdress.neighborhood ?? "",
+                                leading: const Icon(
+                                  Icons.location_on_outlined,
+                                  size: 16,
+                                  color: MoralarColors.brownGrey,
+                                ),
+                                style: textTheme.bodyText1,
+                              ),
+                              MegaListTile(
+                                title: "${controller.user.value.first.interestResidencialProperty![index].residencialPropertyFeatures.squareFootage.toString()} m\u00B2",
+                                leading: const Icon(
+                                  Icons.edit_outlined,
+                                  size: 16,
+                                  color: MoralarColors.brownGrey,
+                                ),
+                                style: textTheme.bodyText1,
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ) : Container(
+                      padding: const EdgeInsets.symmetric(vertical: 64),
+                      child: Text(
+                        'Nenhum imóvel encontrado',
+                        style: textTheme.headline1,
                       ),
                     ),
                   );
@@ -163,7 +183,7 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                 title: 'Questionários Respondidos',
                 cards: Obx(() {
                   return Visibility(
-                    visible: controller.isQuestLoading.value,
+                    visible: controller.isLoading.value,
                     child: Container(
                       padding: const EdgeInsets.only(bottom: 64),
                       alignment: Alignment.center,
@@ -177,41 +197,37 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                         ),
                       ),
                     ),
-                    replacement: Visibility(
-                      visible: controller.quest.isNotEmpty,
-                      child: Column(
-                        children:
-                            List.generate(controller.quest.length, (index) {
-                          return QuizTTSCard(
-                            quiz: controller.quest[index],
-                            function: () {
-                              if (controller.quest[index].typeStatus == 1) {
-                                Get.toNamed(
-                                  Routes.ANSWERS,
-                                  arguments: [
-                                    controller.quest[index].id,
-                                    controller.user.familyId,
-                                  ],
-                                );
-                              }else {
-                                Get.toNamed(
-                                  Routes.QUIZ,
-                                  arguments: [
-                                    controller.quest[index].id,
-                                    controller.user.familyId,
-                                  ],
-                                );
-                              }
-                            },
-                          );
-                        }),
-                      ),
-                      replacement: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 64),
-                        child: Text(
-                          'Nenhum Questionário encontrado',
-                          style: textTheme.headline1,
-                        ),
+                    replacement: (controller.user.value.isNotEmpty && controller.user.value.first.detailQuiz!.isNotEmpty) ? Column(
+                      children:
+                      List.generate(controller.user.value.first.detailQuiz!.length, (index) {
+                        return QuizTTSCard(
+                          quiz: controller.user.value.first.detailQuiz![index],
+                          function: () {
+                            if (controller.user.value.first.detailQuiz![index].typeStatus == 1) {
+                              Get.toNamed(
+                                Routes.ANSWERS,
+                                arguments: [
+                                  controller.user.value.first.detailQuiz![index].id,
+                                  controller.familyUser.familyId,
+                                ],
+                              );
+                            }else {
+                              Get.toNamed(
+                                Routes.QUIZ,
+                                arguments: [
+                                  controller.user.value.first.detailQuiz![index].id,
+                                  controller.familyUser.familyId,
+                                ],
+                              );
+                            }
+                          },
+                        );
+                      }),
+                    ) : Container(
+                      padding: const EdgeInsets.symmetric(vertical: 64),
+                      child: Text(
+                        'Nenhum Questionário encontrado',
+                        style: textTheme.headline1,
                       ),
                     ),
                   );
@@ -221,7 +237,7 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                 title: 'Enquetes',
                 cards: Obx(() {
                   return Visibility(
-                    visible: controller.isEnqLoading.value,
+                    visible: controller.isLoading.value,
                     child: Container(
                       padding: const EdgeInsets.only(bottom: 64),
                       alignment: Alignment.center,
@@ -235,32 +251,28 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                         ),
                       ),
                     ),
-                    replacement: Visibility(
-                      visible: controller.enq.isNotEmpty,
-                      child: Column(
-                        children: List.generate(controller.enq.length, (index) {
-                          return QuizTTSCard(
-                            quiz: controller.enq[index],
-                            function: () {
-                              if (controller.enq[index].typeStatus == 1) {
-                                Get.toNamed(
-                                  Routes.ANSWERS,
-                                  arguments: [
-                                    controller.enq[index].id,
-                                    controller.user.familyId,
-                                  ],
-                                );
-                              }
-                            },
-                          );
-                        }),
-                      ),
-                      replacement: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 64),
-                        child: Text(
-                          'Nenhuma Enquete encontrada',
-                          style: textTheme.headline1,
-                        ),
+                    replacement: (controller.user.value.isNotEmpty && controller.user.value.first.detailEnquete!.isNotEmpty) ? Column(
+                      children: List.generate(controller.user.value.first.detailEnquete!.length, (index) {
+                        return QuizTTSCard(
+                          quiz: controller.user.value.first.detailEnquete![index],
+                          function: () {
+                            if (controller.user.value.first.detailEnquete![index].typeStatus == 1) {
+                              Get.toNamed(
+                                Routes.ANSWERS,
+                                arguments: [
+                                  controller.user.value.first.detailEnquete![index].id,
+                                  controller.familyUser.familyId,
+                                ],
+                              );
+                            }
+                          },
+                        );
+                      }),
+                    ) : Container(
+                      padding: const EdgeInsets.symmetric(vertical: 64),
+                      child: Text(
+                        'Nenhuma Enquete encontrada',
+                        style: textTheme.headline1,
                       ),
                     ),
                   );
@@ -270,7 +282,7 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                 title: 'Cursos',
                 cards: Obx(() {
                   return Visibility(
-                    visible: controller.isCourseLoading.value,
+                    visible: controller.isLoading.value,
                     child: Container(
                       padding: const EdgeInsets.only(bottom: 64),
                       alignment: Alignment.center,
@@ -284,22 +296,18 @@ class TimelineDetailsView extends GetView<TimelineDetailsController> {
                         ),
                       ),
                     ),
-                    replacement: Visibility(
-                      visible: controller.courses.isNotEmpty,
-                      child: Column(
-                        children:
-                            List.generate(controller.courses.length, (index) {
-                          return CourseTTSCard(
-                            course: controller.courses[index],
-                          );
-                        }),
-                      ),
-                      replacement: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 64),
-                        child: Text(
-                          'Nenhum Curso encontrado',
-                          style: textTheme.headline1,
-                        ),
+                    replacement: (controller.user.value.isNotEmpty && controller.user.value.first.courses!.isNotEmpty) ? Column(
+                      children:
+                      List.generate(controller.user.value.first.courses!.length, (index) {
+                        return CourseTTSCard(
+                          course: controller.user.value.first.courses![index],
+                        );
+                      }),
+                    ) : Container(
+                      padding: const EdgeInsets.symmetric(vertical: 64),
+                      child: Text(
+                        'Nenhum Curso encontrado',
+                        style: textTheme.headline1,
                       ),
                     ),
                   );

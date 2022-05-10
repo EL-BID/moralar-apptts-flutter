@@ -89,12 +89,12 @@ class AnswersView extends GetView<AnswersController> {
                         ),
                         const SizedBox(height: 10,),
                         Text(
-                          "Nome: ${controller.user.value.name}",
+                          "Nome: ${controller.answer.first.familyHolderName}",
                           style: textTheme.bodyText2?.copyWith(fontSize: 16)
                         ),
                         const SizedBox(height: 10,),
                         Text(
-                          "CPF: ${controller.user.value.cpf}",
+                          "CPF: ${controller.answer.first.familyHolderCpf}",
                           style: textTheme.bodyText2?.copyWith(fontSize: 16)
                         ),
                       ],
@@ -114,8 +114,8 @@ class AnswersView extends GetView<AnswersController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if(MoralarDate.secondsForDateHours(controller.quiz.value.created).length > 10) Text(
-                          "Data: ${MoralarDate.secondsForDateHours(controller.quiz.value.created).substring(0, 10)}",
+                        if(controller.answer.isNotEmpty && MoralarDate.secondsForDateHours(controller.answer.first.date ?? 0).length > 10) Text(
+                          "Data: ${MoralarDate.secondsForDateHours(controller.answer.first.date ?? 0).substring(0, 10)}",
                           style: textTheme.bodyText2?.copyWith(fontSize: 16)
                         ),
                         const SizedBox(height: 10,),

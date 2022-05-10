@@ -47,7 +47,13 @@ class QuizzesView extends GetView<QuizzesController> {
                                 ],
                               );
                             } else {
-                              // Get
+                              Get.toNamed(
+                                Routes.QUIZ,
+                                arguments: [
+                                  controller.quizzes[index].id,
+                                  controller.quizzes[index].familyId ?? "",
+                                ],
+                              );
                             }
                           },
                         ),

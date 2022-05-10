@@ -58,6 +58,35 @@ class ProfileProvider extends RemoteProvider {
     }
   }
 
+  Future<FamilyTTS> getDetailTimeline(
+      String familyId, int typeSubject) async {
+    try {
+      final response = await get(
+        "${Urls.tts.timelineData}/$familyId/$typeSubject",
+      );
+      // print(response.data);
+      return FamilyTTS.fromJson(response.data);
+    } on MegaResponseException catch (e) {
+      debugPrint(e.message);
+      rethrow;
+    }
+  }
+
+  Future<String> nextStage(String familyId) async {
+    try {
+      final response = await post(
+        Urls.tts.nextStage,
+        body: {
+          "id" : familyId
+        }
+      );
+      return response.data;
+    } on MegaResponseException catch (e) {
+      debugPrint(e.message);
+      rethrow;
+    }
+  }
+
   Future<List<Quiz>> quizByFamily(String familyId, String typeQuiz) async {
     try {
       final response = await get(
