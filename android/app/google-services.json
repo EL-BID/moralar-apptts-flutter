@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "1061656124521",
+    "project_id": "app-moralar",
+    "storage_bucket": "app-moralar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1061656124521:android:b9914a5730e79973d516f8",
+        "android_client_info": {
+          "package_name": "br.com.megaleios.moralar_appusuario"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1061656124521-0b67rfji77th6uo2pgjtjj7au6dao02g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "***REMOVED***"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1061656124521-0b67rfji77th6uo2pgjtjj7au6dao02g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1061656124521-5g7bu0or0c3935h7hoo8pu2bva9gr7lb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.megaleios.moralarAppusuario"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1061656124521:android:2f1632fb81b2b5aed516f8",
+        "android_client_info": {
+          "package_name": "com.megaleios.moralar_tts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1061656124521-0b67rfji77th6uo2pgjtjj7au6dao02g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "***REMOVED***"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1061656124521-0b67rfji77th6uo2pgjtjj7au6dao02g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1061656124521-5g7bu0or0c3935h7hoo8pu2bva9gr7lb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.megaleios.moralarAppusuario"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
